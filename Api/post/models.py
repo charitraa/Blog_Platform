@@ -10,7 +10,7 @@ class Post(models.Model):
 
     title = models.CharField(max_length=200)  # Title of the blog post
     slug = models.SlugField(max_length=200, unique=True)  # URL-friendly version of the title
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='blog_posts')  # Author of the post
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='author_post')  # Author of the post
     content = models.TextField()  # Main content of the post
     created_at = models.DateTimeField(auto_now_add=True)  # Date and time when the post was created
     updated_at = models.DateTimeField(auto_now=True)  # Date and time when the post was last updated
