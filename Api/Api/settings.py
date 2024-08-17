@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-$qo6673z)llx!16*q6fbvynw3!f^_z)edv(*#8p6^qe=tj5c=@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
+
 
 
 # Application definition
@@ -37,8 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'user',
-    'post'
+    'post',
+    'rest_framework',
+    'djoser',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.facebook',
+    
 ]
 
 MIDDLEWARE = [
@@ -48,7 +58,9 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
 ROOT_URLCONF = 'api.urls'
@@ -64,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
@@ -93,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-    {
+    { 
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
@@ -123,4 +136,72 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 AUTH_USER_MODEL = 'user.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'USER_EMAIL_FIELD': 'email',
+    'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {
+        'user_create': 'user.serializers.UserCreateSerializer',
+        'user': 'user.serializers.UserCreateSerializer',
+        'current_user': 'user.serializers.UserCreateSerializer',
+    },
+}
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',  # Use this for GitHub auth
+    'social_core.backends.facebook.FacebookOAuth2',  # Add this for Facebook auth
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+
+SOCIAL_ACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
+    },
+    'facebook': {
+        'METHOD': 'oauth2',  # Set to 'js_sdk' to use the Facebook connect SDK
+        # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'name',
+            'name_format',
+            'picture',
+            'short_name'
+        ],
+        'EXCHANGE_TOKEN': True,
+        # 'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v13.0',
+        # 'GRAPH_API_URL': 'https://graph.facebook.com/v13.0',
+    }
+}
+
+SOCIAL_AUTH_GITHUB_KEY = 'Ov23li25dFk4MVOWg3e6'
+SOCIAL_AUTH_GITHUB_SECRET = '2f1513e17d26cdb28c18c273c54778e46e171e03'
+
+LOGIN_REDIRECT_URL = 'http://localhost:5173/home'
