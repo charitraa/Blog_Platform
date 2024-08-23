@@ -1,11 +1,25 @@
 import axiosInstance from './Axois';
 
 
-export const register = async (email:String, username:String, password:String) => {
+export const register = async (
+  email: string, 
+  username: string, 
+  password: string, 
+  firstName: string, 
+  lastName: string, 
+  dateOfBirth: string
+) => {
   try {
-    const response = await axiosInstance.post('/auth/users/', { email, username, password });
+    const response = await axiosInstance.post('/auth/users/', { 
+      email:email, 
+      username:username, 
+      password:password, 
+      first_name: firstName, 
+      last_name: lastName, 
+      date_of_birth: dateOfBirth 
+    });
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     console.error("Registration failed:", error.response.data);
     throw error;
   }

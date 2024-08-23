@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.facebook',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2'
     
 ]
 
