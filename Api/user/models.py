@@ -23,11 +23,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30, blank=True)
     username = models.CharField(max_length=30, blank=True)
     date_of_birth = models.DateField(blank=True, null=True, default='2024-01-01')
+    photo = models.ImageField(upload_to='user_photos/', default='user_photos/default.jpg', blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)  # This is the field Django uses for superuser status
     date_joined = models.DateTimeField(default=timezone.now)
-
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

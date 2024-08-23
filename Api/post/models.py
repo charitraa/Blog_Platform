@@ -9,6 +9,7 @@ class Post(models.Model):
     ]
 
     title = models.CharField(max_length=200)  # Title of the blog post
+    photo = models.ImageField(upload_to='user_post/', default='user_post/default.jpg', blank=True)
     slug = models.SlugField(max_length=200, unique=True)  # URL-friendly version of the title
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='author_post')  # Author of the post
     content = models.TextField()  # Main content of the post
