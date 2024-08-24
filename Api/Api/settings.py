@@ -29,6 +29,9 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 import os
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -90,8 +93,12 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'blog',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -150,6 +157,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
@@ -163,6 +173,7 @@ DJOSER = {
         'current_user': 'user.serializers.UserCreateSerializer',
     },
 }
+SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',  # Use this for GitHub auth

@@ -11,7 +11,7 @@ export const register = async (
 
 ) => {
   try {
-    const response = await axiosInstance.post('user/auth/users/', {
+    const response = await axiosInstance.post('/user/auth/users/', {
       first_name: firstName,
       last_name: lastName,
       username: username,
@@ -26,12 +26,19 @@ export const register = async (
 }
 
 export const login = async (email: String, password: String) => {
-  const response = await axiosInstance.post('/auth/jwt/create/', { email, password });
-  localStorage.setItem('access_token', response.data.access);
-  localStorage.setItem('refresh_token', response.data.refresh);
+  try {
+    
 
-  const userResponse = await axiosInstance.get('/auth/users/me/');
-  return userResponse.data;
+    const response = await axiosInstance.post('/user/auth/jwt/create/', { email, password });
+    localStorage.setItem('access_token', response.data.access);
+    localStorage.setItem('refresh_token', response.data.refresh);
+
+    const userResponse = await axiosInstance.get('/user/auth/users/me/');
+    return userResponse.data;
+  }
+  catch (error: any) {
+    throw error;
+  }
 };
 
 export const logout = () => {

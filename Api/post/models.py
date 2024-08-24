@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+import uuid
 
 class Post(models.Model):
     STATUS_CHOICES = [
         ('draft', 'Draft'),
         ('published', 'Published'),
     ]
-
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=200)  # Title of the blog post
     photo = models.ImageField(upload_to='user_post/', default='user_post/default.jpg', blank=True)
     slug = models.SlugField(max_length=200, unique=True)  # URL-friendly version of the title

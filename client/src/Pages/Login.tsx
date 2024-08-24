@@ -33,21 +33,24 @@ const Login = () => {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      try {
-        const result: any = login(email, password)
-        if (result) {
-          toast.success('Login successful')
-          navigate('/home');
-        }
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (validateForm()) {
+    try {
+      const result: any = await login(email, password); // Use await for the login function
+      if (result) {
+        toast.success('Login successful');
+        setTimeout(() => { })
+        navigate('/home'); // Navigate to home page
+      } else {
+        toast.error('Failed to login. Please check your email and password');
       }
-      catch (error: any) {
-        toast.error('Failed to login. Please try again later');
-      }
+    } catch (error: any) {
+      toast.error(error.message);
     }
-  };
+  }
+};
+
 
   const handleSignup = () => {
     navigate('/signup');
