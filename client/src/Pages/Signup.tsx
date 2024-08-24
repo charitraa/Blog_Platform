@@ -83,7 +83,7 @@ const validateForm = (): boolean => {
 
         if (result) {
           toast.success('Signup successful!');
-          setInterval(() => {
+          setTimeout(() => {
             navigate('/');
           }, 1000)
         } else {
