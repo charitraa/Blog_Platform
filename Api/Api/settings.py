@@ -44,20 +44,17 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'allauth',
-    'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.facebook',
-    'oauth2_provider',
-    'social_django',
-    'drf_social_oauth2'
-    
+    'allauth.socialaccount.providers.facebook',   
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -156,10 +153,10 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    'USER_CREATE_PASSWORD_RETYPE': True,
+    'USER_CREATE_PASSWORD_RETYPE': False,
     'USER_EMAIL_FIELD': 'email',
     'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
         'user_create': 'user.serializers.UserCreateSerializer',
         'user': 'user.serializers.UserCreateSerializer',
@@ -211,3 +208,5 @@ SOCIAL_AUTH_GITHUB_KEY = 'Ov23li25dFk4MVOWg3e6'
 SOCIAL_AUTH_GITHUB_SECRET = '2f1513e17d26cdb28c18c273c54778e46e171e03'
 
 LOGIN_REDIRECT_URL = 'http://localhost:5173/home'
+
+CORS_ALLOW_ALL_ORIGINS = True

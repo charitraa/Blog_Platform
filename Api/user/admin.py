@@ -9,14 +9,14 @@ class UserAdmin(BaseUserAdmin):
     # that reference specific fields on auth.User.
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'date_of_birth','username')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'date_of_birth','username','photo')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser','groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username','email', 'password1', 'password2'),
+            'fields': ('username','email', 'password1')
         }),
     )
     list_display = ('email', 'first_name', 'last_name','username', 'is_staff')

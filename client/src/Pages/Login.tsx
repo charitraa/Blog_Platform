@@ -1,31 +1,83 @@
-import { useNavigate } from 'react-router-dom'
-import logo from '../../public/vite.svg'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import logo from '../../public/vite.svg';
+import { login } from '../Axois/auth';
+
+
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const validateForm = () => {
+    let isValid = true;
+
+    if (!email) {
+      toast.error('Email is required');
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error('Email address is invalid');
+      isValid = false;
+    }
+
+    if (!password) {
+      toast.error('Password is required');
+      isValid = false;
+    } else if (password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      isValid = false;
+    }
+    return isValid;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        const result: any = login(email, password)
+        if (result) {
+          toast.success('Login successful')
+          navigate('/home');
+        }
+      }
+      catch (error: any) {
+        toast.error('Failed to login. Please try again later');
+      }
+    }
+  };
 
   const handleSignup = () => {
-      navigate('/signup')
-    }
+    navigate('/signup');
+  };
+
   return (
     <div>
+      <ToastContainer />
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="w-full max-w-md p-8 space-y-8 bg-white shadow-lg rounded-lg">
           <div className="flex justify-center mb-6">
-            <img src={logo} alt="" />
+            <img src={logo} alt="Logo" />
           </div>
           <h2 className="text-2xl font-bold text-center text-gray-900">Sign in to your account</h2>
-          <form className="mt-8 space-y-6">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <input
                 type="email"
                 placeholder="Email address"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <input
                 type="password"
                 placeholder="Password"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
@@ -50,7 +102,7 @@ const Login = () => {
                 type="button"
                 className="flex items-center justify-center w-10 h-10 p-2 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none"
               >
-                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" />
+                <img src="https://img.icons8.com/color/48/000000/facebook-new.png" alt="Facebook" />
               </button>
               <button
                 type="button"
@@ -61,12 +113,12 @@ const Login = () => {
             </div>
           </div>
           <p className="mt-6 text-sm text-center text-gray-600">
-            Not a member? <a href="" className="text-indigo-600 hover:underline" onClick={handleSignup}>Signup</a>
+            Not a member? <a href="#" className="text-indigo-600 hover:underline" onClick={handleSignup}>Signup</a>
           </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
