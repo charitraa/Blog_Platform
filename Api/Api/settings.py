@@ -173,6 +173,15 @@ DJOSER = {
         'current_user': 'user.serializers.UserCreateSerializer',
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Use your email provider's SMTP server
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'charitra.shrestha@patancollege.edu.np'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'iucfhsoqoaztwwiu'  # Replace with your email password
+DEFAULT_FROM_EMAIL = 'charitra.shrestha@patancollege.edu.np'  # Replace with your email
+
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
