@@ -10,30 +10,29 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
+import os
+import pymysql
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Install pymysql as MySQLdb, enabling Django to use pymysql as a MySQL database connector.
+pymysql.install_as_MySQLdb()
+
+# Define the base directory of the project, which is useful for building paths within the project.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-$qo6673z)llx!16*q6fbvynw3!f^_z)edv(*#8p6^qe=tj5c=@'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG mode should be set to False in production to avoid exposing sensitive information.
 DEBUG = True
 
+# ALLOWED_HOSTS defines a whitelist of hostnames that the Django site can serve.
 ALLOWED_HOSTS = ['127.0.0.1']
 
-import os
-
-import pymysql
-pymysql.install_as_MySQLdb()
-
 # Application definition
-
+# INSTALLED_APPS lists all the Django and third-party apps that are enabled in the project.
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+# MIDDLEWARE is a list of middleware components that are executed in order during request and response processing.
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -66,8 +66,13 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
+# ROOT_URLCONF specifies the Python module where the root URL patterns are defined.
 ROOT_URLCONF = 'api.urls'
 
+# WSGI_APPLICATION is the WSGI application callable for the project, used for serving the Django application.
+WSGI_APPLICATION = 'api.wsgi.application'
+
+# TEMPLATES is a list of template engines to use, along with their configurations.
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -85,12 +90,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'api.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Database configuration using MySQL.
+# DATABASES defines the settings for database connections.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -102,10 +103,10 @@ DATABASES = {
     }
 }
 
+# AUTH_USER_MODEL specifies a custom user model for authentication.
+AUTH_USER_MODEL = 'user.User'
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
+# Password validation settings to enforce security standards for user passwords.
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -121,34 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_TZ = True
-
-# Media files (user uploads)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = '/static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = 'user.User'
-
+# REST framework settings, including JWT authentication.
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -157,41 +131,77 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+
+# Simple JWT settings for customizing JWT authentication.
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-}
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "UPDATE_LAST_LOGIN": False,
+}   
 
+# Djoser settings for handling user authentication and account management via REST API.
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': False,
     'USER_EMAIL_FIELD': 'email',
     'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': False,
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION':True,
+    'PASSWORD_RESET_CONFIRM_URL': 'auth/reset/confirm/{uid}/{token}',
+    'SET_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+    'TOKEN_MODEL': None,
     'SERIALIZERS': {
         'user_create': 'user.serializers.UserCreateSerializer',
         'user': 'user.serializers.UserCreateSerializer',
         'current_user': 'user.serializers.UserCreateSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
 }
 
+# Internationalization settings for language and time zone.
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
+
+# Configuration for static files (e.g., CSS, JavaScript, images).
+STATIC_URL = '/static/'
+
+# Configuration for media files (e.g., user uploads).
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Default primary key field type for models.
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Email backend configuration for sending emails via SMTP.
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Use your email provider's SMTP server
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'charitra.shrestha@patancollege.edu.np'  # Replace with your email
-EMAIL_HOST_PASSWORD = 'iucfhsoqoaztwwiu'  # Replace with your email password
-DEFAULT_FROM_EMAIL = 'charitra.shrestha@patancollege.edu.np'  # Replace with your email
+EMAIL_HOST_USER = 'charitra.shrestha@patancollege.edu.np'
+EMAIL_HOST_PASSWORD = 'iucfhsoqoaztwwiu'
+DEFAULT_FROM_EMAIL = 'charitra.shrestha@patancollege.edu.np'
 
+
+# SITE_ID is required for the sites framework, which supports associating content with a particular site.
 SITE_ID = 1
 
+
+# Authentication backends for user authentication, including social authentication via GitHub and Facebook.
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.github.GithubOAuth2',  # Use this for GitHub auth
-    'social_core.backends.facebook.FacebookOAuth2',  # Add this for Facebook auth
+    'social_core.backends.github.GithubOAuth2',  # GitHub OAuth2 authentication
+    'social_core.backends.facebook.FacebookOAuth2',  # Facebook OAuth2 authentication
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-
+# Configuration for social account providers like GitHub and Facebook.
 SOCIAL_ACCOUNT_PROVIDERS = {
     'github': {
         'SCOPE': [
@@ -201,8 +211,7 @@ SOCIAL_ACCOUNT_PROVIDERS = {
         ],
     },
     'facebook': {
-        'METHOD': 'oauth2',  # Set to 'js_sdk' to use the Facebook connect SDK
-        # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'METHOD': 'oauth2', 
         'SCOPE': ['email', 'public_profile'],
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'INIT_PARAMS': {'cookie': True},
@@ -217,16 +226,17 @@ SOCIAL_ACCOUNT_PROVIDERS = {
             'short_name'
         ],
         'EXCHANGE_TOKEN': True,
-        # 'LOCALE_FUNC': 'path.to.callable',
         'VERIFIED_EMAIL': False,
         'VERSION': 'v13.0',
-        # 'GRAPH_API_URL': 'https://graph.facebook.com/v13.0',
     }
 }
 
+# OAuth2 credentials for GitHub authentication.
 SOCIAL_AUTH_GITHUB_KEY = 'Ov23li25dFk4MVOWg3e6'
 SOCIAL_AUTH_GITHUB_SECRET = '2f1513e17d26cdb28c18c273c54778e46e171e03'
 
+# LOGIN_REDIRECT_URL specifies the URL to redirect to after a successful login.
 LOGIN_REDIRECT_URL = 'http://localhost:5173/home'
 
+# CORS settings to allow all origins, enabling cross-origin requests.
 CORS_ALLOW_ALL_ORIGINS = True
