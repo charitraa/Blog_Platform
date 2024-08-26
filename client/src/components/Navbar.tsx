@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom'
 import img from '../../public/vite.svg'
 
 const Navbar = () => {
+  const navigate = useNavigate()
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -16,7 +18,11 @@ const Navbar = () => {
             <a href="#" className="text-gray-700 hover:text-indigo-600 border-b-2 border-indigo-600">Home</a>
             <a href="#" className="text-gray-700 hover:text-indigo-600">Post</a>
             <a href="#" className="text-gray-700 hover:text-indigo-600">About</a>
-            <a href="#" className="text-gray-700 hover:text-indigo-600">Contact</a>
+            <a href="#" className="text-gray-700 hover:text-indigo-600" onClick={() =>
+            {
+              navigate('/contact')
+              }
+            }>Contact</a>
           </div>
         </div>
 
@@ -44,9 +50,16 @@ const Navbar = () => {
           </button>
 
           {/* Profile Picture */}
+
           <img
             src="https://via.placeholder.com/32"
             alt="Profile"
+            onClick={
+              () => {
+                // Handle Profile Click Event
+                navigate('/profile')
+              }
+            }
             className="w-8 h-8 rounded-full border-2 border-gray-300"
           />
         </div>
