@@ -1,10 +1,7 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
 
 const Contact: React.FC = () => {
   return (
-    <>
-    <Navbar/>
     <div className="flex justify-center py-12 px-5">
       <div className="flex flex-col items-center gap-8 p-12 w-full max-w-3xl">
         <div className="text-lg text-center max-w-lg">
@@ -40,7 +37,6 @@ const Contact: React.FC = () => {
         </form>
       </div>
       </div>
-      </>
   );
 };
 
