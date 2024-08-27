@@ -40,15 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'user',
     'post',
     'rest_framework',
     'djoser',
-    'allauth',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.facebook',   
     'corsheaders',
 ]
 
@@ -61,9 +56,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
 # ROOT_URLCONF specifies the Python module where the root URL patterns are defined.
@@ -188,55 +181,6 @@ EMAIL_HOST_USER = 'charitra.shrestha@patancollege.edu.np'
 EMAIL_HOST_PASSWORD = 'iucfhsoqoaztwwiu'
 DEFAULT_FROM_EMAIL = 'charitra.shrestha@patancollege.edu.np'
 
-
-# SITE_ID is required for the sites framework, which supports associating content with a particular site.
-SITE_ID = 1
-
-
-# Authentication backends for user authentication, including social authentication via GitHub and Facebook.
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.github.GithubOAuth2',  # GitHub OAuth2 authentication
-    'social_core.backends.facebook.FacebookOAuth2',  # Facebook OAuth2 authentication
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
-
-# Configuration for social account providers like GitHub and Facebook.
-SOCIAL_ACCOUNT_PROVIDERS = {
-    'github': {
-        'SCOPE': [
-            'user',
-            'repo',
-            'read:org',
-        ],
-    },
-    'facebook': {
-        'METHOD': 'oauth2', 
-        'SCOPE': ['email', 'public_profile'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'INIT_PARAMS': {'cookie': True},
-        'FIELDS': [
-            'id',
-            'first_name',
-            'last_name',
-            'middle_name',
-            'name',
-            'name_format',
-            'picture',
-            'short_name'
-        ],
-        'EXCHANGE_TOKEN': True,
-        'VERIFIED_EMAIL': False,
-        'VERSION': 'v13.0',
-    }
-}
-
-# OAuth2 credentials for GitHub authentication.
-SOCIAL_AUTH_GITHUB_KEY = 'Ov23li25dFk4MVOWg3e6'
-SOCIAL_AUTH_GITHUB_SECRET = '2f1513e17d26cdb28c18c273c54778e46e171e03'
-
-# LOGIN_REDIRECT_URL specifies the URL to redirect to after a successful login.
-LOGIN_REDIRECT_URL = 'http://localhost:5173/home'
 
 # CORS settings to allow all origins, enabling cross-origin requests.
 CORS_ALLOW_ALL_ORIGINS = True

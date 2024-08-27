@@ -15,7 +15,11 @@ const Navbar = () => {
           </div>
           {/* Navigation Links */}
           <div className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-700 hover:text-indigo-600 border-b-2 border-indigo-600">Home</a>
+            <a href="#" className="text-gray-700 hover:text-indigo-600 border-b-2 border-indigo-600"onClick={() =>
+            {
+              navigate('/home')
+              }
+            }>Home</a>
             <a href="#" className="text-gray-700 hover:text-indigo-600">Post</a>
             <a href="#" className="text-gray-700 hover:text-indigo-600">About</a>
             <a href="#" className="text-gray-700 hover:text-indigo-600" onClick={() =>

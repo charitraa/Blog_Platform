@@ -1,12 +1,14 @@
 import React from 'react';
+import Navbar from '../components/Navbar';
 
 const Contact: React.FC = () => {
   return (
+    <>
+    <Navbar/>
     <div className="flex justify-center py-12 px-5">
       <div className="flex flex-col items-center gap-8 p-12 w-full max-w-3xl">
-        <div className="text-4xl font-bold text-center">Contact Us</div>
         <div className="text-lg text-center max-w-lg">
-          If you have any further inquiries, please let us know by filling the form below.
+          If you have any further inquiries abou this app, please let us know by filling the form below.
         </div>
         <form className="flex flex-col w-full max-w-md gap-5">
           <div className="flex flex-col sm:flex-row gap-5">
@@ -37,7 +39,8 @@ const Contact: React.FC = () => {
           </div>
         </form>
       </div>
-    </div>
+      </div>
+      </>
   );
 };
 
