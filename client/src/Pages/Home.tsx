@@ -2,9 +2,12 @@ import React from 'react';
 import Image from '../assets/image (9).png';
 import { useAppSelector} from '../useHook/Hook';
 import BlogSection from '../components/BlogSection';
+import { useNavigate } from 'react-router-dom';
+
 
 const Home: React.FC = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const navigate = useNavigate();
   return (
     <>
     <div
@@ -32,10 +35,13 @@ const Home: React.FC = () => {
               <a
                 href="#"
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() => {
+                  navigate('/post')
+                }}
               >
                 Get Started
               </a>
-              <a href="#" className="text-sm font-semibold leading-6 text-white">
+              <a href="#" className="text-sm font-semibold leading-6 text-white" onClick={()=>navigate('/about')}>
                 Learn More <span aria-hidden="true">→</span>
               </a>
             </div>

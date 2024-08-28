@@ -7,22 +7,31 @@ import Edit from '../Pages/profileEdit';
 import Signup from '../Pages/Signup';
 import Contact from '../Pages/Contact';
 import About from '../Pages/About';
-import Post from '../Pages/Post'
+import Post from '../Pages/Post';
+import ProtectedRoute from './ProtectectRoute'; // Import the ProtectedRoute component
+import NotFound from '../Pages/Error'; // Import your 404 page component
 
 const App = () => {
-
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <Routes>
-        <Route path="/login" element={<Login/>} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
+        
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/edit" element={<Edit />} />
+          <Route path="/post" element={<Post />} />
+        </Route>
+
         <Route path="/contact" element={<Contact />} />
-        <Route path="/post/" element={<Post />} />
-        <Route path="/profile/edit" element={<Edit />} />
+        
+        {/* Catch-all route for 404 pages */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
