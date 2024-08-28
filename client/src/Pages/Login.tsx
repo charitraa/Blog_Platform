@@ -118,7 +118,7 @@ const Login = () => {
             </div>
           </div>
           <p className="mt-6 text-sm text-center text-gray-600">
-            Not a member? <a href="#" className="text-indigo-600 hover:underline" onClick={handleSignup}>Signup</a>
+            Not a member? <a href="" className="text-indigo-600 hover:underline" onClick={handleSignup}>Signup</a>
           </p>
         </div>
       </div>

@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import img from '../../public/vite.svg';
 
 interface NavbarProps {
@@ -7,37 +8,63 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Function to check if the link is active
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            {/* Logo */}
-            <img src={img} alt="Logo" className="h-8 w-8" />
-          </div>
+          {/* Logo */}
+          <img src={img} alt="Logo" className="h-8 w-8" />
         </div>
 
         {/* Conditional Rendering Based on Authentication */}
         {isAuthenticated ? (
           /* Authenticated User Navbar */
           <div className="flex items-center justify-between w-full">
-            <div className="flex items-center space-x-8">
+            <div className="flex-grow flex items-center justify-center space-x-8">
               <a
-                href="#"
-                className="text-gray-700 hover:text-indigo-600 border-b-2 border-indigo-600"
+                href=""
+                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
+                  isActive('/home') ? 'border-indigo-600' : 'border-transparent'
+                }`}
                 onClick={() => {
                   navigate('/home');
                 }}
               >
                 Home
               </a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600">Post</a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600">About</a>
               <a
-                href="#"
-                className="text-gray-700 hover:text-indigo-600"
+                href=""
+                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
+                  isActive('/post') ? 'border-indigo-600' : 'border-transparent'
+                }`}
+                onClick={() => {
+                  navigate('/post');
+                }}
+              >
+                Post
+              </a>
+              <a
+                href=""
+                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
+                  isActive('/about') ? 'border-indigo-600' : 'border-transparent'
+                }`}
+                onClick={() => {
+                  navigate('/about');
+                }}
+              >
+                About
+              </a>
+              <a
+                href=""
+                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
+                  isActive('/contact') ? 'border-indigo-600' : 'border-transparent'
+                }`}
                 onClick={() => {
                   navigate('/contact');
                 }}
@@ -52,7 +79,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
                 <input
                   type="text"
                   placeholder="Search"
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <div className="absolute left-3 top-2.5 text-gray-500">
                   <svg
@@ -93,14 +120,48 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
           </div>
         ) : (
           /* Non-Authenticated User Navbar */
-          <div className="flex items-center justify-between">
-            <button
-              className="text-gray-700 hover:text-indigo-600"
+          <div className="flex items-center space-x-8">
+            <a
+              href=""
+              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
+                isActive('/') ? 'border-indigo-600' : 'border-transparent'
+              }`}
               onClick={() => {
-                navigate('/signin');
+                navigate('/');
               }}
-              >
-            Log in
+            >
+              Home
+            </a>
+            <a
+              href=""
+              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
+                isActive('/about') ? 'border-indigo-600' : 'border-transparent'
+              }`}
+              onClick={() => {
+                navigate('/about');
+              }}
+            >
+              About
+            </a>
+            <a
+              href=""
+              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
+                isActive('/contact') ? 'border-indigo-600' : 'border-transparent'
+              }`}
+              onClick={() => {
+                navigate('/contact');
+              }}
+            >
+              Contact
+            </a>
+
+            <button
+              className="ml-4 px-4 py-2 bg-indigo-600 text-white text-lg font-semibold rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out"
+              onClick={() => {
+                navigate('/login');
+              }}
+            >
+              Log in
             </button>
           </div>
         )}

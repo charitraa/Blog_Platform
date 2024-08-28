@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from '../assets/image (6).png'; // Ensure the correct path to the image is used
+import Image from '../assets/image (9).png'; // Ensure the correct path to the image is used
 
 const Home: React.FC = () => {
   return (
@@ -9,26 +9,19 @@ const Home: React.FC = () => {
         backgroundImage: `url('${Image}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: '100vh',
       }}
     >
       <div
         className="mx-auto max-w-2xl flex flex-col justify-center sm:py-48 lg:py-56"
+        style={{
+          height: '100vh', // Make the height equal to the viewport height
+        }}
       >
-        <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-          <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-            Exciting updates from our blog platform!{' '}
-            <a href="#" className="font-semibold text-indigo-600">
-              <span aria-hidden="true" className="absolute inset-0" />
-              Read more <span aria-hidden="true">&rarr;</span>
-            </a>
-          </div>
-        </div>
         <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
             Welcome to Our Blog Platform
           </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="mt-6 text-lg leading-8 text-white">
             Discover insights, stories, and tips from our experienced writers. Stay updated with the latest trends, tech tips, and more!
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -38,7 +31,7 @@ const Home: React.FC = () => {
             >
               Get Started
             </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="#" className="text-sm font-semibold leading-6 text-white">
               Learn More <span aria-hidden="true">→</span>
             </a>
           </div>

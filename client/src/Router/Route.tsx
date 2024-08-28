@@ -5,15 +5,18 @@ import Navbar from '../components/Navbar';
 import Profile from '../Pages/Profile'
 import Signup from '../Pages/Signup';
 import Contact from '../Pages/Contact';
+import About from '../Pages/About';
+
 
 const App = () => {
   return (
     <>
     <Navbar isAuthenticated={ false} />
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/Signup" element={<Signup />} />
-      <Route path="/home" element={<Home />} />
+      <Route path ="/about" element={<About />} />
+      <Route path="/" element={<Home />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/contact" element={<Contact />} />
       </Routes>

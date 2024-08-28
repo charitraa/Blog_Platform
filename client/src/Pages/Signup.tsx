@@ -84,7 +84,7 @@ const validateForm = (): boolean => {
         if (result) {
           toast.success('Signup successful!');
           setTimeout(() => {
-            navigate('/');
+            navigate('/login');
           }, 1000)
         } else {
           toast.error('Signup failed.');
@@ -104,7 +104,7 @@ const validateForm = (): boolean => {
 
   const handlesignin = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    navigate('/');
+    navigate('/login');
   };
 
   return (
