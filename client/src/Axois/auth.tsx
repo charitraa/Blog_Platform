@@ -1,4 +1,6 @@
 import axiosInstance from './Axois';
+import { loginSuccess, logout } from '../store/features/auth/authSlice';
+import { AppDispatch } from '../store/index';
 
 export const register = async (
   firstName: string,
@@ -6,42 +8,46 @@ export const register = async (
   username: string,
   dateOfBirth: string,
   email: string,
-  password: string,
-
-
+  password: string
 ) => {
   try {
     const response = await axiosInstance.post('/user/auth/users/', {
       first_name: firstName,
       last_name: lastName,
-      username: username,
+      username,
       date_of_birth: dateOfBirth,
-      email: email,
-      password: password,
+      email,
+      password,
     });
     return response.data;
   } catch (error: any) {
     throw error;
   }
-}
+};
 
-export const login = async (email: String, password: String) => {
+export const login = async (dispatch: AppDispatch, email: string, password: string) => {
   try {
-    
-
     const response = await axiosInstance.post('/user/auth/jwt/create/', { email, password });
-    localStorage.setItem('access_token', response.data.access);
-    localStorage.setItem('refresh_token', response.data.refresh);
+    const { access, refresh } = response.data;
 
-    const userResponse = await axiosInstance.get('/user/auth/users/me/');
+    const userResponse = await axiosInstance.get('/user/auth/users/me/', {
+      headers: {
+        Authorization: `JWT ${access}`,
+      },
+    });
+
+    dispatch(loginSuccess({
+      accessToken: access,
+      refreshToken: refresh,
+      user: userResponse.data,
+    }));
+
     return userResponse.data;
-  }
-  catch (error: any) {
+  } catch (error: any) {
     throw error;
   }
 };
 
-export const logout = () => {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
+export const Logout = (dispatch: AppDispatch) => {
+  dispatch(logout());
 };

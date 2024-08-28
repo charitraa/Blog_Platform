@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../useHook/Hook';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../../public/vite.svg';
 import { login } from '../Axois/auth';
 
-
-const Login = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,22 +38,20 @@ const Login = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const result: any = await login(email, password); // Use await for the login function
-        if (result) {
+        const user = await login(dispatch, email, password); // Pass dispatch as the first argument
+        if (user) {
           toast.success('Login successful');
           setTimeout(() => {
-            navigate('/home');
-          }, 1000)
-          // Navigate to home page
+            navigate('/');
+          }, 1000);
         } else {
           toast.error('Failed to login. Please check your email and password');
         }
       } catch (error: any) {
-        toast.error(error.message);
+        toast.error(error.message || 'Login failed');
       }
     }
   };
-
 
   const handleSignup = () => {
     navigate('/signup');

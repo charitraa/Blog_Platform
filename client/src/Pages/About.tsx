@@ -1,5 +1,5 @@
 import React from 'react';
-
+import member from '../assets/WhatsApp Image 2024-08-28 at 2.52.16 PM.jpeg'
 const About: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-8 font-sans">
@@ -15,7 +15,7 @@ const About: React.FC = () => {
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Our Story</h2>
         <p className="text-lg mb-4">
-          Founded in [Year], our blog started as a small project among friends passionate about [Topic/Niche]. Over time, we’ve grown into a platform where writers, experts, and enthusiasts share their knowledge and experiences with a broader audience.
+          Founded in 2024, our blog started as a small project among friends passionate about Tech. Over time, we’ve grown into a platform where writers, experts, and enthusiasts share their knowledge and experiences with a broader audience.
         </p>
         <p className="text-lg mb-4">
           From humble beginnings, we’ve expanded our content to cover a wide range of topics, all aimed at providing value and fostering a community of curious and engaged readers.
@@ -25,15 +25,15 @@ const About: React.FC = () => {
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Meet the Team</h2>
         <p className="text-lg mb-4">
-          Our team is a diverse group of individuals with a shared passion for [Your Blog's Focus]. Each team member brings unique skills and perspectives, contributing to the rich variety of content we offer.
+          Our team is a diverse group of individuals with a shared passion for Tech. Each team member brings unique skills and perspectives, contributing to the rich variety of content we offer.
         </p>
         <div className="flex flex-wrap -mx-4">
           <div className="w-full md:w-1/3 px-4 mb-6">
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <img src="[Team Member Image URL]" alt="Team Member Name" className="w-full h-48 object-cover rounded-lg mb-4" />
-              <h3 className="text-xl font-bold mb-2">Team Member Name</h3>
-              <p className="text-gray-700 mb-4">Role/Title</p>
-              <p className="text-gray-600">Brief bio about the team member and their contributions to the blog.</p>
+              <img src={member} alt="Team Member Name" className="w-full h-48 object-cover rounded-lg mb-4" />
+              <h3 className="text-xl font-bold mb-2">Charitra Shrestha</h3>
+              <p className="text-gray-700 mb-4">Admin</p>
+            
             </div>
           </div>
           {/* Repeat for other team members */}
@@ -83,7 +83,7 @@ const About: React.FC = () => {
           Follow us on social media to stay updated on the latest articles, news, and events. Join our community and be part of the conversation!
         </p>
         <div className="flex space-x-4">
-          <a href="[Facebook URL]" className="text-blue-600 hover:underline">Facebook</a>
+          <a href="" className="text-blue-600 hover:underline">Facebook</a>
           <a href="[Twitter URL]" className="text-blue-400 hover:underline">Twitter</a>
           <a href="[Instagram URL]" className="text-pink-600 hover:underline">Instagram</a>
           {/* Add other social media links */}

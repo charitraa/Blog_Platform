@@ -14,7 +14,7 @@ const Home: React.FC = () => {
       <div
         className="mx-auto max-w-2xl flex flex-col justify-center sm:py-48 lg:py-56"
         style={{
-          height: '100vh', // Make the height equal to the viewport height
+          height: '100vh',
         }}
       >
         <div className="text-center">

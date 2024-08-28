@@ -1,40 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import img from '../../public/vite.svg';
+import { useAppSelector, useAppDispatch } from '../useHook/Hook';
+import { Logout } from '../Axois/auth';
 
-interface NavbarProps {
-  isAuthenticated: boolean;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
+const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useAppDispatch();
+  const [showSubMenu, setShowSubMenu] = useState(false);
 
-  // Function to check if the link is active
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+    Logout(dispatch)
+    navigate('/login');
+  };
+
+  const toggleSubMenu = () => {
+    setShowSubMenu(!showSubMenu);
+  };
 
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo Section */}
         <div className="flex items-center space-x-4">
-          {/* Logo */}
           <img src={img} alt="Logo" className="h-8 w-8" />
         </div>
 
-        {/* Conditional Rendering Based on Authentication */}
         {isAuthenticated ? (
-          /* Authenticated User Navbar */
           <div className="flex items-center justify-between w-full">
             <div className="flex-grow flex items-center justify-center space-x-8">
               <a
                 href=""
                 className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
-                  isActive('/home') ? 'border-indigo-600' : 'border-transparent'
+                  isActive('/') ? 'border-indigo-600' : 'border-transparent'
                 }`}
-                onClick={() => {
-                  navigate('/home');
-                }}
+                onClick={() => navigate('/')}
               >
                 Home
               </a>
@@ -43,9 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
                 className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
                   isActive('/post') ? 'border-indigo-600' : 'border-transparent'
                 }`}
-                onClick={() => {
-                  navigate('/post');
-                }}
+                onClick={() => navigate('/post')}
               >
                 Post
               </a>
@@ -54,9 +55,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
                 className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
                   isActive('/about') ? 'border-indigo-600' : 'border-transparent'
                 }`}
-                onClick={() => {
-                  navigate('/about');
-                }}
+                onClick={() => navigate('/about')}
               >
                 About
               </a>
@@ -65,16 +64,13 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
                 className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
                   isActive('/contact') ? 'border-indigo-600' : 'border-transparent'
                 }`}
-                onClick={() => {
-                  navigate('/contact');
-                }}
+                onClick={() => navigate('/contact')}
               >
                 Contact
               </a>
             </div>
 
-            <div className="flex items-center space-x-4">
-              {/* Search Bar */}
+            <div className="flex items-center space-x-4 relative">
               <div className="relative">
                 <input
                   type="text"
@@ -94,7 +90,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
                 </div>
               </div>
 
-              {/* Notifications */}
               <button className="text-gray-500 hover:text-gray-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -107,28 +102,43 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
                 </svg>
               </button>
 
-              {/* Profile Picture */}
-              <img
-                src="https://via.placeholder.com/32"
-                alt="Profile"
-                onClick={() => {
-                  navigate('/profile');
-                }}
-                className="w-8 h-8 rounded-full border-2 border-gray-300"
-              />
+              <div className="relative">
+                <img
+                  src="https://via.placeholder.com/32"
+                  alt="Profile"
+                  onClick={toggleSubMenu}
+                  className="w-8 h-8 rounded-full border-2 border-gray-300 cursor-pointer"
+                />
+
+                {showSubMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+                    <a
+                      href=""
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      onClick={() => navigate('/profile')}
+                    >
+                      View Profile
+                    </a>
+                    <a
+                      href=""
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </a>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ) : (
-          /* Non-Authenticated User Navbar */
           <div className="flex items-center space-x-8">
             <a
               href=""
               className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
                 isActive('/') ? 'border-indigo-600' : 'border-transparent'
               }`}
-              onClick={() => {
-                navigate('/');
-              }}
+              onClick={() => navigate('/')}
             >
               Home
             </a>
@@ -137,9 +147,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
               className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
                 isActive('/about') ? 'border-indigo-600' : 'border-transparent'
               }`}
-              onClick={() => {
-                navigate('/about');
-              }}
+              onClick={() => navigate('/about')}
             >
               About
             </a>
@@ -148,18 +156,14 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
               className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
                 isActive('/contact') ? 'border-indigo-600' : 'border-transparent'
               }`}
-              onClick={() => {
-                navigate('/contact');
-              }}
+              onClick={() => navigate('/contact')}
             >
               Contact
             </a>
 
             <button
               className="ml-4 px-4 py-2 bg-indigo-600 text-white text-lg font-semibold rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out"
-              onClick={() => {
-                navigate('/login');
-              }}
+              onClick={() => navigate('/login')}
             >
               Log in
             </button>
