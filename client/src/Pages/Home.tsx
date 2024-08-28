@@ -1,10 +1,12 @@
 import React from 'react';
 import Image from '../assets/image (9).png';
 import { useAppSelector} from '../useHook/Hook';
+import BlogSection from '../components/BlogSection';
 
 const Home: React.FC = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   return (
+    <>
     <div
       className="relative isolate min-h-screen px-6 pt-14 lg:px-8"
       style={{
@@ -19,9 +21,7 @@ const Home: React.FC = () => {
           height: '100vh',
         }}
       >
-        {isAuthenticated ? (
-          // Render blog or cart content if user is authenticated
-          <div className="text-center">
+        <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
               Welcome to Our Blog Platform
             </h1>
@@ -40,27 +40,31 @@ const Home: React.FC = () => {
               </a>
             </div>
           </div>
+        </div>
+      </div>
+        {isAuthenticated ? (
+          // Render blog or cart content if user is authenticated
+        <BlogSection/>
         ) : (
           // Render login prompt if user is not authenticated
           <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-black sm:text-6xl">
               Please Log In
             </h1>
-            <p className="mt-6 text-lg leading-8 text-white">
+            <p className="mt-6 text-lg leading-8 text-black">
               You must be logged in to view our blog platform.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="/login" // Link to your login page
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Log In
               </a>
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </>
   );
 };
 
