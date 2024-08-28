@@ -3,9 +3,11 @@ import Login from '../Pages/Login';
 import Home from '../Pages/Home';
 import Navbar from '../components/Navbar';
 import Profile from '../Pages/Profile';
+import Edit from '../Pages/profileEdit';
 import Signup from '../Pages/Signup';
 import Contact from '../Pages/Contact';
 import About from '../Pages/About';
+import Post from '../Pages/Post'
 
 const App = () => {
 
@@ -19,6 +21,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/post/" element={<Post />} />
+        <Route path="/profile/edit" element={<Edit />} />
       </Routes>
     </>
   );
