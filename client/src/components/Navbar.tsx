@@ -7,7 +7,8 @@ import { Logout } from '../Axois/auth';
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+ const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const user = useAppSelector((state) => state.auth.user); // Always call useAppSelector
   const dispatch = useAppDispatch();
   const [showSubMenu, setShowSubMenu] = useState(false);
 
@@ -17,6 +18,8 @@ const Navbar: React.FC = () => {
     Logout(dispatch)
     navigate('/login');
   };
+
+  const profile = isAuthenticated ? user?.photo : null;
 
   const toggleSubMenu = () => {
     setShowSubMenu(!showSubMenu);
@@ -104,7 +107,7 @@ const Navbar: React.FC = () => {
 
               <div className="relative">
                 <img
-                  src="https://via.placeholder.com/32"
+                  src={profile}
                   alt="Profile"
                   onClick={toggleSubMenu}
                   className="w-8 h-8 rounded-full border-2 border-gray-300 cursor-pointer"

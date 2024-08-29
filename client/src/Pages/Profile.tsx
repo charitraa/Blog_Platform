@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useAppSelector} from '../useHook/Hook';
 interface ProfileProps {
   profilePic: string;
   username: string;
@@ -9,13 +9,19 @@ interface ProfileProps {
   posts: string[];
 }
 
-const Profile: React.FC = () => {
+const Profile: React.FC = (): JSX.Element => {
+  const user = useAppSelector((state) => state.auth.user);
+  console.log(user);
+
   const profileData: ProfileProps = {
-    profilePic: "https://via.placeholder.com/150",
-    username: "john_doe",
-    name: "John Doe",
-    bio: "Travel enthusiast. Love to explore new places and cultures.",
+    profilePic:user?.photo || "https://via.placeholder.com/300",
+    username: '@' +user?.username || "username",
+    name: user?.first_name +'  '+ user?.last_name || "name",
+    bio: user?.bio || '',
     posts: [
+      "https://via.placeholder.com/300",
+      "https://via.placeholder.com/300",
+      "https://via.placeholder.com/300",
       "https://via.placeholder.com/300",
       "https://via.placeholder.com/300",
       "https://via.placeholder.com/300",
@@ -36,9 +42,10 @@ const Profile: React.FC = () => {
           <h2 className="text-xl font-bold">{profileData.username}</h2>
           <p className="text-gray-600">{profileData.name}</p>
           <p className="text-gray-500 text-sm">{profileData.bio}</p>
-          <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={()=>
-            navigate('/profile/edit')
-          }>
+          <button
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            onClick={() => navigate('/profile/edit')}
+          >
             Edit Profile
           </button>
         </div>

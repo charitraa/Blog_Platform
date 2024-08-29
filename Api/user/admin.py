@@ -9,7 +9,7 @@ class UserAdmin(BaseUserAdmin):
     # that reference specific fields on auth.User.
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'date_of_birth','username','photo')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'date_of_birth','username','photo','bio')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser','groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
@@ -19,7 +19,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('username','email', 'password1')
         }),
     )
-    list_display = ('email', 'first_name', 'last_name','username', 'is_staff')
+    list_display = ('email', 'first_name', 'last_name','username', 'is_staff','bio')
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
 
