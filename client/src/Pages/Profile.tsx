@@ -41,6 +41,7 @@ const Profile: React.FC = (): JSX.Element => {
         <div>
           <h2 className="text-xl font-bold">{profileData.username}</h2>
           <p className="text-gray-600">{profileData.name}</p>
+          <p> Posts <span>10 </span></p>
           <p className="text-gray-500 text-sm">{profileData.bio}</p>
           <button
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"

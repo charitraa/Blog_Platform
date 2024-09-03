@@ -3,7 +3,7 @@ import Login from '../Pages/Login';
 import Home from '../Pages/Home';
 import Navbar from '../components/Navbar';
 import Profile from '../Pages/Profile';
-import Edit from '../Pages/profileEdit';
+import Edit from '../Pages/ProfileEdit';
 import Signup from '../Pages/Signup';
 import Contact from '../Pages/Contact';
 import About from '../Pages/About';
