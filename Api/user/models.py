@@ -25,6 +25,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_of_birth = models.DateField(blank=True, null=True, default='2024-01-01')
     photo = models.ImageField(upload_to='user_photos/', default='user_photos/default.jpg', blank=True)
     bio = models.CharField(max_length=100, blank=True)
+    province = models.CharField(max_length=50, blank=True)
+    district = models.CharField(max_length=50, blank=True)
+    city = models.CharField(max_length=50, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)  # This is the field Django uses for superuser status
