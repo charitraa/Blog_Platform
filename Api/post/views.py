@@ -1,4 +1,3 @@
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -57,3 +56,17 @@ def posts_by_user(request, user_id):
     posts = Post.objects.filter(author=user)
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def counts_post_by_user(request, user_id):
+    try:
+        # Get the user by their ID
+        user = get_user_model().objects.get(id=user_id)
+    except get_user_model().DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Get the count of posts by the user
+    post_count = Post.objects.filter(author=user).count()
+
+    return Response({'post_count': post_count}, status=status.HTTP_200_OK)
