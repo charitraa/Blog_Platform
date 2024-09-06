@@ -14,9 +14,6 @@ const Profile: React.FC = (): JSX.Element => {
   const user = useAppSelector((state) => state.auth.user);
   const [Count, setCount] = useState(0)
 
-  const users = localStorage.getItem('user');
-  const parsedUser = users ? JSON.parse(users) : null;
-
   const profileData: ProfileProps = {
     profilePic:user?.photo || "https://via.placeholder.com/300",
     username: '@' +user?.username || "username",
@@ -37,17 +34,16 @@ const Profile: React.FC = (): JSX.Element => {
   // Define an asynchronous function to fetch the post count
   const fetchPostCount = async () => {
     try {
-      const response = await axiosInstance.get(`/post/posts/count/${parsedUser.id}/`);
-      // Set Count to the post_count value, not the entire response object
+      const response = await axiosInstance.get(`/post/posts/count/${user?.id}/`);
       setCount(response.data.post_count);
     } catch (error) {
       console.error('Error fetching post count:', error);
-      setCount(0); // Optionally handle the error and set a default count
+      setCount(0); 
     }
   };
 
   fetchPostCount();
-  }, [parsedUser?.id]);
+  }, [user?.id]);
 
   return (
     <div className="max-w-md mx-auto p-6 font-sans">

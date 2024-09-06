@@ -1,28 +1,53 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 
-const provincesAndDistricts: Record<string, string[]> = {
-  "Province 1": ["Jhapa", "Ilam", "Panchthar", "Taplejung", "Sankhuwasabha", "Tehrathum", "Dhankuta", "Bhojpur", "Khotang", "Okhaldhunga", "Solukhumbu", "Udayapur"],
-  "Province 2": ["Saptari", "Siraha", "Dhanusha", "Mahottari", "Sarlahi", "Rautahat", "Bara", "Parsa", "Chhathapur", "Khairahani", "Koshi", "Bara", "Rautahat"],
-  "Bagmati": ["Kathmandu", "Lalitpur", "Bhaktapur", "Sindhupalchok", "Dolakha", "Ramechhap", "Kavrepalanchok", "Makwanpur", "Sindhuli", "Nuwakot", "Dhading", "Rasuwa"],
-  "Gandaki": ["Pokhara", "Kaski", "Lamjung", "Tanahu", "Gorkha", "Syangja", "Baglung", "Parbat", "Mustang", "Manang", "Myagdi"],
-  "Lumbini": ["Lumbini", "Rupandehi", "Kapilvastu", "Nawalparasi", "Palpa", "Arghakhanchi", "Gulmi", "Syanja", "Dang", "Banke", "Bardiya", "Kailali", "Kanchanpur"],
-  "Karnali": ["Surkhet", "Dailekh", "Jumla", "Mugu", "Kalikot", "Humla", "Rukum", "Salyan", "Dolpa", "Jajarkot"],
-  "Sudurpashchim": ["Doti", "Achham", "Bajura", "Bajhang", "Kailali", "Kanchanpur", "Dadeldhura", "Baitadi", "Darchula", "Mahakali"],
-};
+// Define districts for selection
+const districts: string[] = [
+  "Jhapa", "Ilam", "Panchthar", "Taplejung", "Sankhuwasabha", "Tehrathum", "Dhankuta", "Bhojpur", "Khotang", 
+  "Okhaldhunga", "Solukhumbu", "Udayapur", "Saptari", "Siraha", "Dhanusha", "Mahottari", "Sarlahi", 
+  "Rautahat", "Bara", "Parsa", "Kathmandu", "Lalitpur", "Bhaktapur", "Sindhupalchok", "Dolakha", "Ramechhap", 
+  "Kavrepalanchok", "Makwanpur", "Sindhuli", "Nuwakot", "Dhading", "Rasuwa", "Pokhara", "Kaski", "Lamjung", 
+  "Tanahu", "Gorkha", "Syangja", "Baglung", "Parbat", "Mustang", "Manang", "Myagdi", "Lumbini", "Rupandehi", 
+  "Kapilvastu", "Nawalparasi", "Palpa", "Arghakhanchi", "Gulmi", "Dang", "Banke", "Bardiya", "Kailali", 
+  "Kanchanpur", "Surkhet", "Dailekh", "Jumla", "Mugu", "Kalikot", "Humla", "Rukum", "Salyan", "Dolpa", 
+  "Jajarkot", "Doti", "Achham", "Bajura", "Bajhang", "Dadeldhura", "Baitadi", "Darchula", "Mahakali",
+];
 
 const ProfileEdit: React.FC = () => {
-  const [selectedProvince, setSelectedProvince] = useState<string>("");
-  const [districtOptions, setDistrictOptions] = useState<string[]>([]);
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("");
+  const [city, setCity] = useState<string>(""); // City input
+  const [parsedUser, setParsedUser] = useState<any>(null);
 
-  const handleProvinceChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const province = event.target.value;
-    setSelectedProvince(province);
-    setDistrictOptions(provincesAndDistricts[province] || []);
+  // Load user data from localStorage
+  useEffect(() => {
+    const users = localStorage.getItem("user");
+    if (users) {
+      const user = JSON.parse(users);
+      setParsedUser(user);
+      setSelectedDistrict(user.district || ""); // Set district if available
+      setCity(user.city || ""); // Set city if available
+    }
+  }, []);
+
+  const handleDistrictChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const district = event.target.value;
+    setSelectedDistrict(district);
+    console.log("Selected District: ", district); // Debugging line
+  };
+
+  const handleCityChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const city = event.target.value;
+    setCity(city);
+    console.log("City: ", city); // Debugging line
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission logic here
+    try {
+      
+    }
+    catch (e) { 
+      console.error("Error updating user data: ");
+    }
   };
 
   return (
@@ -41,11 +66,11 @@ const ProfileEdit: React.FC = () => {
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"></span>
                   <input
                     id="username"
                     name="username"
                     type="text"
+                    value={parsedUser?.username || ""}
                     placeholder="janesmith"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   />
@@ -62,8 +87,9 @@ const ProfileEdit: React.FC = () => {
                   id="about"
                   name="about"
                   rows={3}
+                  value={parsedUser?.bio || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={''}
+                  defaultValue={""}
                 />
               </div>
               <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
@@ -85,7 +111,7 @@ const ProfileEdit: React.FC = () => {
                   id="first-name"
                   name="first-name"
                   type="text"
-                  autoComplete="given-name"
+                  value={parsedUser?.first_name || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -100,7 +126,7 @@ const ProfileEdit: React.FC = () => {
                   id="last-name"
                   name="last-name"
                   type="text"
-                  autoComplete="family-name"
+                  value={parsedUser?.last_name || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -115,31 +141,9 @@ const ProfileEdit: React.FC = () => {
                   id="email"
                   name="email"
                   type="email"
-                  autoComplete="email"
+                  value={parsedUser?.email || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <label htmlFor="province" className="block text-sm font-medium leading-6 text-gray-900">
-                Province
-              </label>
-              <div className="mt-2">
-                <select
-                  id="province"
-                  name="province"
-                  value={selectedProvince}
-                  onChange={handleProvinceChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                >
-                  <option value="">Select a province</option>
-                  {Object.keys(provincesAndDistricts).map((province) => (
-                    <option key={province} value={province}>
-                      {province}
-                    </option>
-                  ))}
-                </select>
               </div>
             </div>
 
@@ -147,44 +151,49 @@ const ProfileEdit: React.FC = () => {
               <label htmlFor="district" className="block text-sm font-medium leading-6 text-gray-900">
                 District
               </label>
-              <div className="mt-2">
-                <select
-                  id="district"
-                  name="district"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  disabled={!selectedProvince}
-                >
-                  <option value="">Select a district</option>
-                  {districtOptions.map((district) => (
-                    <option key={district} value={district}>
-                      {district}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <select
+                id="district"
+                name="district"
+                value={selectedDistrict}
+                onChange={handleDistrictChange}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              >
+                <option value="">Select District</option>
+                {districts.map((district) => (
+                  <option key={district} value={district}>
+                    {district}
+                  </option>
+                ))}
+              </select>
             </div>
-            <div className="col-span-full">
+
+            <div className="sm:col-span-6">
               <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
                 City
               </label>
-              <div className="mt-2">
-                <input
-                  id="city"
-                  name="city"
-                  type="text"
-                  autoComplete="address-locality"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
+              <input
+                id="city"
+                name="city"
+                type="text"
+                value={city}
+                onChange={handleCityChange}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
             </div>
           </div>
         </div>
 
-        <div className="pt-6 flex items-center justify-end gap-x-6">
-          <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+        <div className="mt-6 flex items-center justify-end gap-x-6">
+          <button
+            type="button"
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
             Cancel
           </button>
-          <button type="submit" className="text-sm font-semibold leading-6 text-indigo-600">
+          <button
+            type="submit"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
             Save
           </button>
         </div>

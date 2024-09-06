@@ -22,3 +22,5 @@ export const Post = async (title: string, content: string, photo: File) => {
     throw error;
   }
 };
+
+
