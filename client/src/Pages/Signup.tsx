@@ -35,43 +35,44 @@ const Signup = () => {
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
-const validateForm = (): boolean => {
-  const newErrors: FormErrors = {};
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
 
-  if (!formData.firstName) newErrors.firstName = 'First name is required';
+    if (!formData.firstName) newErrors.firstName = 'First name is required';
 
-  if (!formData.lastName) newErrors.lastName = 'Last name is required';
-  if (!formData.dob) {
-    newErrors.dob = 'Date of Birth is required';
-  } else {
-    const dob = new Date(formData.dob);
-    const today = new Date();
+    if (!formData.lastName) newErrors.lastName = 'Last name is required';
 
-    if (dob > today) {
-      newErrors.dob = 'Date of Birth cannot be in the future';
+    if (!formData.dob) {
+      newErrors.dob = 'Date of Birth is required';
     } else {
-      const ageDiffMs = today.getTime() - dob.getTime();
-      const ageDate = new Date(ageDiffMs); 
-      const age = Math.abs(ageDate.getUTCFullYear() - 1970);
-      if (age < 18) {
-        newErrors.dob = 'You must be at least 18 years old';
+      const dob = new Date(formData.dob);
+      const today = new Date();
+
+      if (dob > today) {
+        newErrors.dob = 'Date of Birth cannot be in the future';
+      } else {
+        const ageDiffMs = today.getTime() - dob.getTime();
+        const ageDate = new Date(ageDiffMs);
+        const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+        if (age < 18) {
+          newErrors.dob = 'You must be at least 18 years old';
+        }
       }
     }
-  }
 
-  if (!formData.username) newErrors.username = 'Username is required';
+    if (!formData.username) newErrors.username = 'Username is required';
 
-  if (!formData.email) newErrors.email = 'Email is required';
+    if (!formData.email) newErrors.email = 'Email is required';
 
-  if (!formData.password) {
-    newErrors.password = 'Password is required';
-  } else if (formData.password.length < 8) {
-    newErrors.password = 'Password must be at least 8 characters long';
-  }
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters long';
+    }
 
-  setErrors(newErrors);
-  return Object.keys(newErrors).length === 0;
-};
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -85,12 +86,13 @@ const validateForm = (): boolean => {
           toast.success('Signup successful!');
           setTimeout(() => {
             navigate('/login');
-          }, 1000)
+          }, 1000);
         } else {
           toast.error('Signup failed.');
         }
       } catch (err: any) {
-        toast.error(`Error: ${err.response.data.email}`);
+        toast.error(`Error: ${err.response?.data?.message || 'An error occurred'}`);
+        console.log(err);
       }
     } else {
       toast.error('Please fix the errors in the form.');
@@ -102,7 +104,7 @@ const validateForm = (): boolean => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handlesignin = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleSignin = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     navigate('/login');
   };
@@ -111,30 +113,34 @@ const validateForm = (): boolean => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-8 bg-white shadow-lg rounded-lg">
         <div className="flex justify-center mb-6">
-          <img src={img} alt="" />
+          <img src={img} alt="Logo" />
         </div>
         <h2 className="text-2xl font-bold text-center text-gray-900">Create your account</h2>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div className="flex space-x-4">
-              <input
-                type="text"
-                name="firstName"
-                placeholder="First name"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-1/2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              {errors.firstName && <p className="text-red-500">{errors.firstName}</p>}
-              <input
-                type="text"
-                name="lastName"
-                placeholder="Last name"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="w-1/2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
+              <div className="w-1/2">
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+              </div>
+              <div className="w-1/2">
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last name"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+              </div>
             </div>
             <input
               type="date"
@@ -143,7 +149,7 @@ const validateForm = (): boolean => {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            {errors.dob && <p className="text-red-500">{errors.dob}</p>}
+            {errors.dob && <p className="text-red-500 text-sm">{errors.dob}</p>}
             <input
               type="text"
               name="username"
@@ -152,7 +158,7 @@ const validateForm = (): boolean => {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            {errors.username && <p className="text-red-500">{errors.username}</p>}
+            {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
             <input
               type="email"
               name="email"
@@ -161,7 +167,7 @@ const validateForm = (): boolean => {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            {errors.email && <p className="text-red-500">{errors.email}</p>}
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             <input
               type="password"
               name="password"
@@ -170,7 +176,7 @@ const validateForm = (): boolean => {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            {errors.password && <p className="text-red-500">{errors.password}</p>}
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
           </div>
           <button
             type="submit"
@@ -180,7 +186,7 @@ const validateForm = (): boolean => {
           </button>
         </form>
         <p className="mt-6 text-sm text-center text-gray-600">
-          Already have an account? <a className="text-indigo-600 hover:underline" onClick={handlesignin}>Sign in</a>
+          Already have an account? <a className="text-indigo-600 hover:underline" onClick={handleSignin}>Sign in</a>
         </p>
       </div>
       <ToastContainer />

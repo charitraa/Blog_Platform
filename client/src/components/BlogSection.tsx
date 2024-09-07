@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../Axois/Axois";
+import { useNavigate } from "react-router-dom";
 
 interface BlogPost {
   id: string;
@@ -26,6 +27,7 @@ const formatDate = (dateString: string): string => {
 };
 
 const BlogSection: React.FC = () => {
+  const navigate = useNavigate()
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +58,7 @@ const BlogSection: React.FC = () => {
         </div>
         <div className="mt-12 space-y-12 ">
           {blogPosts.map((post, index) => (
-            <div key={index} className="flex flex-col sm:flex-row items-start cursor-pointer">
+            <div key={index} className="flex flex-col sm:flex-row items-start cursor-pointer" onClick={()=>navigate(`/post/${post.id}`)}>
               <img
                 src={`http://127.0.0.1:8000${post.photo}`}
                 alt={post.title}

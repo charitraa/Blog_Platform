@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "../useHook/User";
 import axiosInstance from "../Axois/Axois";
 import { useNavigate } from "react-router-dom";
+import bcrypt from 'bcryptjs';
 
 const districts: string[] = [
   "Jhapa", "Ilam", "Panchthar", "Taplejung", "Sankhuwasabha", "Tehrathum", "Dhankuta", "Bhojpur", "Khotang", 
@@ -91,6 +92,8 @@ const ProfileEdit: React.FC = () => {
     event.preventDefault();
 
     if (!validateForm()) return;
+    const salt = bcrypt.genSaltSync(10); // Generate salt
+    const hashedPassword = bcrypt.hashSync(password, salt);
 
     const updatedData = {
       district: selectedDistrict,
@@ -98,7 +101,7 @@ const ProfileEdit: React.FC = () => {
       first_name: parsedUser?.first_name,
       last_name: parsedUser?.last_name,
       email: parsedUser?.email,
-      password,
+      password: hashedPassword,
     };
 
     try {

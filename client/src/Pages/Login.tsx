@@ -90,7 +90,7 @@ const Login: React.FC = () => {
                 <input type="checkbox" className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
                 <span className="ml-2 text-sm text-gray-900">Remember me</span>
               </label>
-              <div className="text-sm text-indigo-600 hover:underline">Forgot password?</div>
+              <div className="text-sm text-indigo-600 hover:underline  cursor-pointer">Forgot password?</div>
             </div>
             <button
               type="submit"
@@ -117,7 +117,7 @@ const Login: React.FC = () => {
             </div>
           </div>
           <p className="mt-6 text-sm text-center text-gray-600">
-            Not a member? <div className="text-indigo-600 hover:underline" onClick={handleSignup}>Signup</div>
+            Not a member? <div className="text-indigo-600 hover:underline cursor-pointer" onClick={handleSignup}>Signup</div>
           </p>
         </div>
       </div>
