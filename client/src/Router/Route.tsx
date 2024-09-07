@@ -10,6 +10,7 @@ import About from '../Pages/About';
 import Post from '../Pages/Post';
 import ProtectedRoute from './ProtectectRoute'; // Import the ProtectedRoute component
 import NotFound from '../Pages/Error'; // Import your 404 page component
+import EditBlogPostForm from '../Pages/EditPost';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/edit" element={<Edit />} />
           <Route path="/post" element={<Post />} />
+          <Route path="/profile/post/:id" element={<EditBlogPostForm />} />
         </Route>
 
         <Route path="/contact" element={<Contact />} />

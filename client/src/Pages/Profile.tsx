@@ -8,13 +8,13 @@ interface ProfileProps {
   username: string;
   name: string;
   bio: string;
-  posts: { photo: string }[];
+  posts: { photo: string, id:string }[];
 }
 
 const Profile: React.FC = (): JSX.Element => {
   const { user, loading, error } = useUser();
   const [profilePic, setProfilePic] = useState("");
-  const [posts, setPosts] = useState<{ photo: string }[]>([]);
+  const [posts, setPosts] = useState<{ photo: string , id:string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -107,6 +107,9 @@ const Profile: React.FC = (): JSX.Element => {
               src={`http://127.0.0.1:8000${post.photo}`} // Ensure the path is correct
               alt={`Post ${index + 1}`}
               className="w-full h-40 object-cover rounded-lg"
+              onClick={()=>
+                navigate(`post/${post.id}`)
+              }
             />
           ))}
         </div>

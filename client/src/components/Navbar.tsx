@@ -111,7 +111,7 @@ const Navbar: React.FC = () => {
                     <div
 
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => navigate('/profile')}
+                      onClick={() => { navigate('/profile'); setShowSubMenu(false); } }
                     >
                       View Profile
                     </div>
