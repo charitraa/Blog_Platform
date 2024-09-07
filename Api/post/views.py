@@ -3,14 +3,14 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from .models import Post
 from django.contrib.auth import get_user_model
-from .serializers import PostSerializer
+from .serializers import PostSerializer, UserPostSerializer
 
 # GET all posts and POST a new post
 @api_view(['GET', 'POST'])
 def post_list(request):
     if request.method == 'GET':
         posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
+        serializer = UserPostSerializer(posts, many=True)
         return Response(serializer.data)
     
     elif request.method == 'POST':

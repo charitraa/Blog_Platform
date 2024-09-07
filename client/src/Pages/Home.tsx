@@ -33,14 +33,14 @@ const Home: React.FC = () => {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <div
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold cursor-pointer text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
                   navigate('/post')
                 }}
               >
                 Get Started
               </div>
-              <div className="text-sm font-semibold leading-6 text-white" onClick={()=>navigate('/about')}>
+              <div className="text-sm cursor-pointer font-semibold leading-6 text-white" onClick={()=>navigate('/about')}>
                 Learn More <span aria-hidden="true">→</span>
               </div>
             </div>
@@ -63,7 +63,7 @@ const Home: React.FC = () => {
               <div
                 // Link to your login page
                 onClick={()=> navigate('/login')}
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 cursor-pointer px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Log In
               </div>
