@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector} from '../useHook/Hook';
 import axiosInstance from "../Axois/Axois";
+import { useUser } from "../useHook/User";
 interface ProfileProps {
   profilePic: string;
   username: string;
@@ -11,7 +11,7 @@ interface ProfileProps {
 }
 
 const Profile: React.FC = (): JSX.Element => {
-  const user = useAppSelector((state) => state.auth.user);
+  const { user } = useUser();
   const [Count, setCount] = useState(0)
 
   const profileData: ProfileProps = {
@@ -31,7 +31,6 @@ const Profile: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-  // Define an asynchronous function to fetch the post count
   const fetchPostCount = async () => {
     try {
       const response = await axiosInstance.get(`/post/posts/count/${user?.id}/`);

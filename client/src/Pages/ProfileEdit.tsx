@@ -1,6 +1,6 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import React, { useState, ChangeEvent, FormEvent} from "react";
+import { useUser } from "../useHook/User";
 
-// Define districts for selection
 const districts: string[] = [
   "Jhapa", "Ilam", "Panchthar", "Taplejung", "Sankhuwasabha", "Tehrathum", "Dhankuta", "Bhojpur", "Khotang", 
   "Okhaldhunga", "Solukhumbu", "Udayapur", "Saptari", "Siraha", "Dhanusha", "Mahottari", "Sarlahi", 
@@ -15,29 +15,17 @@ const districts: string[] = [
 const ProfileEdit: React.FC = () => {
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
   const [city, setCity] = useState<string>(""); // City input
-  const [parsedUser, setParsedUser] = useState<any>(null);
-
-  // Load user data from localStorage
-  useEffect(() => {
-    const users = localStorage.getItem("user");
-    if (users) {
-      const user = JSON.parse(users);
-      setParsedUser(user);
-      setSelectedDistrict(user.district || ""); // Set district if available
-      setCity(user.city || ""); // Set city if available
-    }
-  }, []);
+  
+  const { user } = useUser();
 
   const handleDistrictChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const district = event.target.value;
     setSelectedDistrict(district);
-    console.log("Selected District: ", district); // Debugging line
   };
 
   const handleCityChange = (event: ChangeEvent<HTMLInputElement>) => {
     const city = event.target.value;
     setCity(city);
-    console.log("City: ", city); // Debugging line
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -70,7 +58,7 @@ const ProfileEdit: React.FC = () => {
                     id="username"
                     name="username"
                     type="text"
-                    value={parsedUser?.username || ""}
+                    value={user?.username || ""}
                     placeholder="janesmith"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   />
@@ -87,7 +75,7 @@ const ProfileEdit: React.FC = () => {
                   id="about"
                   name="about"
                   rows={3}
-                  value={parsedUser?.bio || ""}
+                  value={user?.bio || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   defaultValue={""}
                 />
@@ -111,7 +99,7 @@ const ProfileEdit: React.FC = () => {
                   id="first-name"
                   name="first-name"
                   type="text"
-                  value={parsedUser?.first_name || ""}
+                  value={user?.first_name || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -126,7 +114,7 @@ const ProfileEdit: React.FC = () => {
                   id="last-name"
                   name="last-name"
                   type="text"
-                  value={parsedUser?.last_name || ""}
+                  value={user?.last_name || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -141,7 +129,7 @@ const ProfileEdit: React.FC = () => {
                   id="email"
                   name="email"
                   type="email"
-                  value={parsedUser?.email || ""}
+                  value={user?.email || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
