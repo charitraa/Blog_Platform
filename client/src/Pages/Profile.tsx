@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../Axois/Axois";
 import { useUser } from "../useHook/User";
@@ -12,11 +12,18 @@ interface ProfileProps {
 }
 
 const Profile: React.FC = (): JSX.Element => {
-  const { user } = useUser();
-  const [count, setCount] = useState(0);
+  const { user, loading, error } = useUser();
+  const [profilePic, setProfilePic] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (user) {
+      setProfilePic(user.photo);
+    }
+  })
   const profileData: ProfileProps = {
-    profilePic: user?.photo || "https://via.placeholder.com/300",
+    profilePic: profilePic,
     username: '@' + (user?.username || "username"),
     name: (user?.first_name || "") + " " + (user?.last_name || "name"),
     bio: user?.bio || "",
@@ -29,23 +36,33 @@ const Profile: React.FC = (): JSX.Element => {
       "https://via.placeholder.com/300",
     ],
   };
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPostCount = async () => {
-      if (!user?.id) return;
+  const handleProfilePicClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('photo', file);
 
       try {
-        const response = await axiosInstance.get(`/post/posts/count/${user.id}/`);
-        setCount(response.data.post_count);
+        const response = await axiosInstance.put('/user/photo/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        setProfilePic(response.data.photo);
+        window.location.reload();
       } catch (error) {
-        console.error("Error fetching post count:", error);
-        setCount(0);
+        console.error("Error uploading profile photo:", error);
       }
-    };
+    }
+  };
 
-    fetchPostCount();
-  }, [user?.id]);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="max-w-md mx-auto p-6 font-sans">
@@ -54,14 +71,18 @@ const Profile: React.FC = (): JSX.Element => {
         <img
           src={profileData.profilePic}
           alt="Profile"
-          className="w-24 h-24 rounded-full mr-6"
+          className="w-24 h-24 rounded-full mr-6 cursor-pointer object-cover"
+          onClick={handleProfilePicClick}
+        />
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
         />
         <div>
           <h2 className="text-xl font-bold">{profileData.username}</h2>
           <p className="text-gray-600">{profileData.name}</p>
-          <p>
-            Posts <span>{count}</span>
-          </p>
           <p className="text-gray-500 text-sm">{profileData.bio}</p>
           <button
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
