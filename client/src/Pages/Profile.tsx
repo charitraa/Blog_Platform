@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../Axois/Axois";
 import { useUser } from "../useHook/User";
+
 interface ProfileProps {
   profilePic: string;
   username: string;
@@ -12,13 +13,13 @@ interface ProfileProps {
 
 const Profile: React.FC = (): JSX.Element => {
   const { user } = useUser();
-  const [Count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   const profileData: ProfileProps = {
-    profilePic:user?.photo || "https://via.placeholder.com/300",
-    username: '@' +user?.username || "username",
-    name: user?.first_name +'  '+ user?.last_name || "name",
-    bio: user?.bio || '',
+    profilePic: user?.photo || "https://via.placeholder.com/300",
+    username: '@' + (user?.username || "username"),
+    name: (user?.first_name || "") + " " + (user?.last_name || "name"),
+    bio: user?.bio || "",
     posts: [
       "https://via.placeholder.com/300",
       "https://via.placeholder.com/300",
@@ -31,17 +32,19 @@ const Profile: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const fetchPostCount = async () => {
-    try {
-      const response = await axiosInstance.get(`/post/posts/count/${user?.id}/`);
-      setCount(response.data.post_count);
-    } catch (error) {
-      console.error('Error fetching post count:', error);
-      setCount(0); 
-    }
-  };
+    const fetchPostCount = async () => {
+      if (!user?.id) return;
 
-  fetchPostCount();
+      try {
+        const response = await axiosInstance.get(`/post/posts/count/${user.id}/`);
+        setCount(response.data.post_count);
+      } catch (error) {
+        console.error("Error fetching post count:", error);
+        setCount(0);
+      }
+    };
+
+    fetchPostCount();
   }, [user?.id]);
 
   return (
@@ -56,12 +59,13 @@ const Profile: React.FC = (): JSX.Element => {
         <div>
           <h2 className="text-xl font-bold">{profileData.username}</h2>
           <p className="text-gray-600">{profileData.name}</p>
-          <p> Posts <span>{Count}</span></p>
-
+          <p>
+            Posts <span>{count}</span>
+          </p>
           <p className="text-gray-500 text-sm">{profileData.bio}</p>
           <button
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-            onClick={() => navigate('/profile/edit')}
+            onClick={() => navigate("/profile/edit")}
           >
             Edit Profile
           </button>
