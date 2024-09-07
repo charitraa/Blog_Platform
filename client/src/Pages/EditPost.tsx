@@ -54,6 +54,23 @@ export default function EditBlogPostForm() {
     }
   }, [id]);
 
+  const handleDelete = async () => {
+    try {
+      const response = await axiosInstance.delete(`/post/posts/${id}/`);
+      if (response.status === 204) { // Check for 204 No Content
+        toast.success('Post deleted successfully');
+        setTimeout(() => {
+          navigate('/profile'); // Redirect to the profile page after 1 second
+        }, 1000);
+      } else {
+        toast.error('Failed to delete post');
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('An error occurred while deleting the post.');
+    }
+  };
+
   useEffect(() => {
     // Update the photo preview when the selected file changes
     if (formValues.photo) {
@@ -69,7 +86,7 @@ export default function EditBlogPostForm() {
     const newErrors = {
       title: formValues.title ? '' : 'Title is required',
       content: formValues.content ? '' : 'Content is required',
-      photo: '', 
+      photo: '',
     };
 
     setErrors(newErrors);
@@ -200,10 +217,10 @@ export default function EditBlogPostForm() {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="button"
-            className="text-sm font-semibold"
-            onClick={() => { setFormValues({ title: '', content: '', photo: null }); navigate('/profile') }}
+            className="bg-red-600 text-white px-3 py-2 rounded-md"
+            onClick={handleDelete} // Call handleDelete directly
           >
-            Cancel
+            Delete
           </button>
           <button
             type="submit"
@@ -211,6 +228,14 @@ export default function EditBlogPostForm() {
           >
             Save
           </button>
+          <button
+            type="button"
+            className="text-sm font-semibold"
+            onClick={() => { setFormValues({ title: '', content: '', photo: null }); navigate('/profile') }}
+          >
+            Cancel
+          </button>
+
         </div>
       </form>
     </div>

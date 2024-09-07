@@ -1,9 +1,11 @@
+// src/components/BlogPostForm.tsx
 import React, { useState } from 'react';
 import { PhotoIcon } from '@heroicons/react/24/solid';
 import { Post } from '../Axois/user';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { useCurrentUser } from '../useHook/userCurrent';
 
 type PostFormValues = {
   title: string;
@@ -12,7 +14,8 @@ type PostFormValues = {
 };
 
 export default function BlogPostForm() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const user = useCurrentUser(); // Get the current user
   const [formValues, setFormValues] = useState<PostFormValues>({
     title: '',
     content: '',
@@ -55,19 +58,20 @@ export default function BlogPostForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (validateForm()) {
+    if (validateForm() && user) {
       try {
-        const result = await Post(formValues.title, formValues.content, formValues.photo!);
+        const result = await Post(formValues.title, formValues.content, formValues.photo!, user.id);
         if (result) {
           toast.success('Post created successfully!');
           setTimeout(() => {
             navigate('/'); // Navigate to homepage
-          }, 2000);
+          }, 1000);
         } else {
           toast.error('Failed to create the post.');
         }
       } catch (error) {
         toast.error('An error occurred. Please try again.');
+        console.log(error);
       }
     }
   };

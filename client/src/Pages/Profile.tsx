@@ -24,7 +24,7 @@ const Profile: React.FC = (): JSX.Element => {
       axiosInstance
         .get(`/post/posts/user/${user.id}/`)
         .then((response) => {
-          console.log("Fetched posts:", response.data); // Debug: Log fetched data
+          console.log("Fetched posts:", response.data);
           setPosts(response.data);
         })
         .catch((error) => {
