@@ -180,7 +180,7 @@ const validateForm = (): boolean => {
           </button>
         </form>
         <p className="mt-6 text-sm text-center text-gray-600">
-          Already have an account? <a href="#" className="text-indigo-600 hover:underline" onClick={handlesignin}>Sign in</a>
+          Already have an account? <a className="text-indigo-600 hover:underline" onClick={handlesignin}>Sign in</a>
         </p>
       </div>
       <ToastContainer />

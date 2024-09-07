@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import img from '../../public/vite.svg';
 import { useAppSelector, useAppDispatch } from '../useHook/Hook';
@@ -33,42 +33,37 @@ const Navbar: React.FC = () => {
         {isAuthenticated ? (
           <div className="flex items-center justify-between w-full">
             <div className="flex-grow flex items-center justify-center space-x-8">
-              <a
-                href=""
-                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
-                  isActive('/') ? 'border-indigo-600' : 'border-transparent'
-                }`}
+              <div
+                className={`text-lg font-semibold text-gray-700 cursor-pointer hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${isActive('/') ? 'border-indigo-600' : 'border-transparent'
+                  }`}
                 onClick={() => navigate('/')}
               >
                 Home
-              </a>
-              <a
-                href=""
-                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
-                  isActive('/post') ? 'border-indigo-600' : 'border-transparent'
-                }`}
+              </div>
+              <div
+
+                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 cursor-pointer transition duration-300 ease-in-out border-b-2 ${isActive('/post') ? 'border-indigo-600' : 'border-transparent'
+                  }`}
                 onClick={() => navigate('/post')}
               >
                 Post
-              </a>
-              <a
-                href=""
-                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
-                  isActive('/about') ? 'border-indigo-600' : 'border-transparent'
-                }`}
+              </div>
+              <div
+
+                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 cursor-pointer transition duration-300 ease-in-out border-b-2 ${isActive('/about') ? 'border-indigo-600' : 'border-transparent'
+                  }`}
                 onClick={() => navigate('/about')}
               >
                 About
-              </a>
-              <a
-                href=""
-                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
-                  isActive('/contact') ? 'border-indigo-600' : 'border-transparent'
-                }`}
+              </div>
+              <div
+
+                className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 cursor-pointer transition duration-300 ease-in-out border-b-2 ${isActive('/contact') ? 'border-indigo-600' : 'border-transparent'
+                  }`}
                 onClick={() => navigate('/contact')}
               >
                 Contact
-              </a>
+              </div>
             </div>
 
             <div className="flex items-center space-x-4 relative">
@@ -76,7 +71,7 @@ const Navbar: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Search"
-                  className="pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <div className="absolute left-3 top-2.5 text-gray-500">
                   <svg
@@ -113,20 +108,20 @@ const Navbar: React.FC = () => {
 
                 {showSubMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                    <a
-                      href=""
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    <div
+
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
                       onClick={() => navigate('/profile')}
                     >
                       View Profile
-                    </a>
-                    <a
-                      href=""
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    </div>
+                    <div
+
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
                       onClick={handleLogout}
                     >
                       Logout
-                    </a>
+                    </div>
                   </div>
                 )}
               </div>
@@ -134,36 +129,30 @@ const Navbar: React.FC = () => {
           </div>
         ) : (
           <div className="flex items-center space-x-8">
-            <a
-              href=""
-              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
-                isActive('/') ? 'border-indigo-600' : 'border-transparent'
-              }`}
+            <div
+              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition cursor-pointer duration-300 ease-in-out border-b-2 ${isActive('/') ? 'border-indigo-600' : 'border-transparent'
+                }`}
               onClick={() => navigate('/')}
             >
               Home
-            </a>
-            <a
-              href=""
-              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
-                isActive('/about') ? 'border-indigo-600' : 'border-transparent'
-              }`}
+            </div>
+            <div
+              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 cursor-pointer transition duration-300 ease-in-out border-b-2 ${isActive('/about') ? 'border-indigo-600' : 'border-transparent'
+                }`}
               onClick={() => navigate('/about')}
             >
               About
-            </a>
-            <a
-              href=""
-              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out border-b-2 ${
-                isActive('/contact') ? 'border-indigo-600' : 'border-transparent'
-              }`}
+            </div>
+            <div
+              className={`text-lg font-semibold text-gray-700 hover:text-indigo-600 cursor-pointer transition duration-300 ease-in-out border-b-2 ${isActive('/contact') ? 'border-indigo-600' : 'border-transparent'
+                }`}
               onClick={() => navigate('/contact')}
             >
               Contact
-            </a>
+            </div>
 
             <button
-              className="ml-4 px-4 py-2 bg-indigo-600 text-white text-lg font-semibold rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out"
+              className="ml-4 px-4 py-2 bg-indigo-600 text-white text-lg font-semibold cursor-pointer rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out"
               onClick={() => navigate('/login')}
             >
               Log in

@@ -8,33 +8,37 @@ interface ProfileProps {
   username: string;
   name: string;
   bio: string;
-  posts: string[];
+  posts: { photo: string }[];
 }
 
 const Profile: React.FC = (): JSX.Element => {
   const { user, loading, error } = useUser();
   const [profilePic, setProfilePic] = useState("");
+  const [posts, setPosts] = useState<{ photo: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
       setProfilePic(user.photo);
+      axiosInstance
+        .get(`/post/posts/user/${user.id}/`)
+        .then((response) => {
+          console.log("Fetched posts:", response.data); // Debug: Log fetched data
+          setPosts(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching posts:", error);
+        });
     }
-  })
+  }, [user]);
+
   const profileData: ProfileProps = {
     profilePic: profilePic,
     username: '@' + (user?.username || "username"),
     name: (user?.first_name || "") + " " + (user?.last_name || "name"),
     bio: user?.bio || "",
-    posts: [
-      "https://via.placeholder.com/300",
-      "https://via.placeholder.com/300",
-      "https://via.placeholder.com/300",
-      "https://via.placeholder.com/300",
-      "https://via.placeholder.com/300",
-      "https://via.placeholder.com/300",
-    ],
+    posts: posts,
   };
 
   const handleProfilePicClick = () => {
@@ -65,13 +69,13 @@ const Profile: React.FC = (): JSX.Element => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="max-w-md mx-auto p-6 font-sans">
+    <div className="max-w-4xl mx-auto p-6 font-sans">
       {/* Profile Header */}
-      <div className="flex items-center mb-6">
+      <div className="flex items-center mb-6 border-b pb-4 justify-center">
         <img
           src={profileData.profilePic}
           alt="Profile"
-          className="w-24 h-24 rounded-full mr-6 cursor-pointer object-cover"
+          className="w-32 h-32 rounded-full mr-6 cursor-pointer object-cover"
           onClick={handleProfilePicClick}
         />
         <input
@@ -81,11 +85,11 @@ const Profile: React.FC = (): JSX.Element => {
           onChange={handleFileChange}
         />
         <div>
-          <h2 className="text-xl font-bold">{profileData.username}</h2>
-          <p className="text-gray-600">{profileData.name}</p>
-          <p className="text-gray-500 text-sm">{profileData.bio}</p>
+          <h2 className="text-2xl font-bold mb-2">{profileData.username}</h2>
+          <p className="text-gray-700 text-lg mb-1">{profileData.name}</p>
+          <p className="text-gray-600 mb-4">{profileData.bio}</p>
           <button
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             onClick={() => navigate("/profile/edit")}
           >
             Edit Profile
@@ -94,15 +98,18 @@ const Profile: React.FC = (): JSX.Element => {
       </div>
 
       {/* Posts Section */}
-      <div className="grid grid-cols-3 gap-4">
-        {profileData.posts.map((post, index) => (
-          <img
-            key={index}
-            src={post}
-            alt={`Post ${index + 1}`}
-            className="w-full h-auto rounded-lg"
-          />
-        ))}
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold mb-4">Posts</h3>
+        <div className="grid grid-cols-3 gap-4">
+          {profileData.posts.map((post, index) => (
+            <img
+              key={index}
+              src={`http://127.0.0.1:8000${post.photo}`} // Ensure the path is correct
+              alt={`Post ${index + 1}`}
+              className="w-full h-40 object-cover rounded-lg"
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

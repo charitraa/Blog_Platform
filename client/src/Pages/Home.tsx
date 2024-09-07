@@ -32,18 +32,17 @@ const Home: React.FC = () => {
               Discover insights, stories, and tips from our experienced writers. Stay updated with the latest trends, tech tips, and more!
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href="#"
+              <div
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
                   navigate('/post')
                 }}
               >
                 Get Started
-              </a>
-              <a href="#" className="text-sm font-semibold leading-6 text-white" onClick={()=>navigate('/about')}>
+              </div>
+              <div className="text-sm font-semibold leading-6 text-white" onClick={()=>navigate('/about')}>
                 Learn More <span aria-hidden="true">→</span>
-              </a>
+              </div>
             </div>
           </div>
         </div>
@@ -61,12 +60,13 @@ const Home: React.FC = () => {
               You must be logged in to view our blog platform.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href="/login" // Link to your login page
+              <div
+                // Link to your login page
+                onClick={()=> navigate('/login')}
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Log In
-              </a>
+              </div>
             </div>
           </div>
         )}
