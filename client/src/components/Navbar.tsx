@@ -1,25 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import img from '../../public/vite.svg';
 import { useAppSelector, useAppDispatch } from '../useHook/Hook';
 import { Logout } from '../Axois/auth';
+import axiosInstance from '../Axois/Axois';
+import { access_token } from './access';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
- const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const user = useAppSelector((state) => state.auth.user); // Always call useAppSelector
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const [showSubMenu, setShowSubMenu] = useState(false);
+  const [image, setImage] = useState<string | undefined>();
 
   const isActive = (path: string) => location.pathname === path;
 
   const handleLogout = () => {
-    Logout(dispatch)
+    Logout(dispatch);
     navigate('/login');
   };
 
-  const profile = isAuthenticated ? user?.photo : null;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userResponse = await axiosInstance.get('/user/auth/users/me/', {
+          headers: {
+            Authorization: `JWT ${access_token}`,
+          },
+        });
+
+        setImage(userResponse.data.photo);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchUserData();
+  }, [access_token]);
 
   const toggleSubMenu = () => {
     setShowSubMenu(!showSubMenu);
@@ -107,7 +125,7 @@ const Navbar: React.FC = () => {
 
               <div className="relative">
                 <img
-                  src={profile}
+                  src={image}
                   alt="Profile"
                   onClick={toggleSubMenu}
                   className="w-8 h-8 rounded-full border-2 border-gray-300 cursor-pointer"

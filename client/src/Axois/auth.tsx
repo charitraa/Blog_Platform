@@ -30,19 +30,12 @@ export const login = async (dispatch: AppDispatch, email: string, password: stri
     const response = await axiosInstance.post('/user/auth/jwt/create/', { email, password });
     const { access, refresh } = response.data;
 
-    const userResponse = await axiosInstance.get('/user/auth/users/me/', {
-      headers: {
-        Authorization: `JWT ${access}`,
-      },
-    });
-
     dispatch(loginSuccess({
       accessToken: access,
       refreshToken: refresh,
-      user: userResponse.data,
     }));
 
-    return userResponse.data;
+    return response.data;
   } catch (error: any) {
     throw error;
   }
