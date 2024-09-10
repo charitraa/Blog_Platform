@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../useHook/Hook';
 import { ToastContainer, toast } from 'react-toastify';
@@ -52,6 +52,10 @@ const Login: React.FC = () => {
       }
     }
   };
+
+  const handleLoginWithGithub =()=>{
+        window.location.assign(`https://github.com/login/oauth/authorize/?client_id=Ov23likU81Y6vJxr6Y2Z`)
+    }
 
   const handleSignup = () => {
     navigate('/signup');
@@ -110,7 +114,7 @@ const Login: React.FC = () => {
               </button>
               <button
                 type="button"
-                className="flex items-center justify-center w-10 h-10 p-2 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none"
+                className="flex items-center justify-center w-10 h-10 p-2 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none" onClick={handleLoginWithGithub}
               >
                 <img src="https://img.icons8.com/ios-glyphs/30/000000/github.png" alt="GitHub" />
               </button>

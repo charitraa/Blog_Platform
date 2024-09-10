@@ -1,43 +1,37 @@
-import requests
-from google.auth.transport import requests
-from google.oauth2 import id_token
-from .models import User
-from django.contrib.auth import authenticate
-from django.conf import settings
-from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth.models import User
+from rest_framework.exceptions import ValidationError
 
 def register_social_user(provider, email, first_name, last_name):
-    old_user=User.objects.filter(email=email)
-    if old_user.exists():
-        if provider == old_user[0].auth_provider:
-            register_user=authenticate(email=email, password="")
+    """
+    This function checks if a user exists in the database.
+    If the user exists, it will return the existing user.
+    If the user does not exist, it will create a new user and associate it with the social provider.
+    """
+    # Check if the user already exists based on email
+    try:
+        user = User.objects.get(email=email)
+        print(f"User {user.email} already exists.")
+        return {"email": user.email, "first_name": user.first_name, "last_name": user.last_name, "provider": provider}
+    except User.DoesNotExist:
+        # Create a new user if they don't exist
+        print(f"Creating a new user: {email}, {first_name} {last_name} via {provider}")
+        
+        user = User.objects.create(
+            username=email,  # Set username to email or you can generate a unique one
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            password=None  # No password is needed for social login users
+        )
+        
+        # You may want to save additional social-specific details in another model/table if needed.
+        # Example: Save provider data in a separate `SocialAccount` model.
+        # SocialAccount.objects.create(user=user, provider=provider)
 
-            return {
-                'full_name':register_user.get_full_name,
-                'email':register_user.email,
-                'tokens':register_user.tokens()
-            }
-        else:
-            raise AuthenticationFailed(
-                detail=f"please continue your login with {old_user[0].auth_provider}"
-            )
-    else:
-        new_user={
-            'email':email,
-            'first_name':first_name,
-            'last_name':last_name,
-            'password':""
-        }
-        user=User.objects.create_user(**new_user)
-        user.auth_provider=provider
-        user.is_verified=True
-        user.save()
-        login_user=authenticate(email=email, password="")
-       
-        tokens=login_user.tokens()
-        return {
-            'email':login_user.email,
-            'full_name':login_user.get_full_name,
-            "access_token":str(tokens.get('access')),
-            "refresh_token":str(tokens.get('refresh'))
-        }
+        # Return the newly created user details
+        return {"email": user.email, "first_name": user.first_name, "last_name": user.last_name, "provider": provider}
+
+    except Exception as e:
+        # Handle any unexpected exceptions
+        print(f"An error occurred while registering the user: {str(e)}")
+        raise ValidationError("An error occurred while registering the user.")

@@ -15,7 +15,7 @@ axiosInstance.interceptors.request.use(
         // Get the access token from local storage
         const token = localStorage.getItem('access_token');
         if (token) {
-            config.headers['Authorization'] = 'JWT ' + token; // Use JWT token
+            config.headers['Authorization'] = 'Bearer ' + token; // Use JWT token
         }
         return config;
     },

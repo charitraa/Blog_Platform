@@ -1,15 +1,53 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from '../assets/image (9).png';
 import { useAppSelector} from '../useHook/Hook';
 import BlogSection from '../components/BlogSection';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import axiosInstance from '../Axois/Axois';
+import { toast } from 'react-toastify';
 
 
 const Home: React.FC = () => {
+  const [searchparams] = useSearchParams()
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
+  const send_github__code_to_server = async()=>{
+            if (searchparams) {
+                try {
+                const urlparam = searchparams.get('code')  
+                const resp = await axiosInstance.post('/user/github/', {'code':urlparam})
+                const result = resp.data
+                console.log(result)
+                if (resp.status===200) {
+                    const user ={
+                    'email':result.email,
+                    'names':result.full_name
+                }
+                localStorage.setItem('access_token', JSON.stringify(result))
+                localStorage.setItem('refresh_token', JSON.stringify(result))
+
+                navigate('/')
+                toast.success('login successful')
+                }
+              } catch (error:any) {
+                  if (error.response) {
+                    console.log(error.response.data);
+                    toast.error(error.response.data.detail)
+                  } 
+                }  
+              }
+        
+    } 
+
+  let code =searchparams.get('code')
+    useEffect(() => {
+        if (code) {
+          send_github__code_to_server()  
+        }   
+    }, [code])
   return (
     <>
+      
     <div
       className="relative isolate min-h-screen px-6 pt-14 lg:px-8"
       style={{
@@ -69,7 +107,9 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div>
-        )}
+          
+      )}
+      
       </>
   );
 };

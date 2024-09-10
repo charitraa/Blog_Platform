@@ -116,18 +116,20 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # REST framework settings, including JWT authentication.
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-}
+# REST_FRAMEWORK={
+#     'NON_FIELD_ERRORS_KEY':'error',
+#         'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     )
+# }
+
+DOMAIN='localhost:3000'
+SITE_NAME = 'Henry Ultimate Authentication Course'
 
 # Simple JWT settings for customizing JWT authentication.
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT',),
+    'AUTH_HEADER_TYPES': ('Bearer',),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
@@ -154,6 +156,9 @@ DJOSER = {
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
 }
+
+GITHUB_SECRET="41559f93bbd93184db3734ee6f2a29e186c705e9"
+GITHUB_CLIENT_ID="Ov23li25dFk4MVOWg3e6"
 
 # Internationalization settings for language and time zone.
 LANGUAGE_CODE = 'en-us'
@@ -186,3 +191,4 @@ DEFAULT_FROM_EMAIL = 'charitra.shrestha@patancollege.edu.np'
 
 # CORS settings to allow all origins, enabling cross-origin requests.
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS=True
