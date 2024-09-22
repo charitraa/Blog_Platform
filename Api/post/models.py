@@ -4,10 +4,11 @@ from django.utils import timezone
 import uuid
 
 class Post(models.Model):
-    id = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False, unique=True)
-    title = models.CharField(max_length=200)  # Title of the blog post
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True, db_index=False)
+
+    title = models.TextField()  # Title of the blog post
     photo = models.ImageField(upload_to='user_post/', default='user_post/default.png', blank=True)
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='author_post')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='author_post', db_index=False)
     content = models.TextField()  # Main content of the post
     created_at = models.DateTimeField(auto_now_add=True)  # Date and time when the post was created
     updated_at = models.DateTimeField(auto_now=True)  # Date and time when the post was last updated

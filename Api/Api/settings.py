@@ -90,9 +90,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
+    'OPTIONS': {
+            'charset': 'utf8',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -116,13 +120,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # REST framework settings, including JWT authentication.
-# REST_FRAMEWORK={
-#     'NON_FIELD_ERRORS_KEY':'error',
-#         'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.SessionAuthentication',
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     )
-# }
+REST_FRAMEWORK={
+    'NON_FIELD_ERRORS_KEY':'error',
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 DOMAIN='localhost:3000'
 SITE_NAME = 'Henry Ultimate Authentication Course'
@@ -130,7 +134,7 @@ SITE_NAME = 'Henry Ultimate Authentication Course'
 # Simple JWT settings for customizing JWT authentication.
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "UPDATE_LAST_LOGIN": True,
