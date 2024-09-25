@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-$qo6673z)llx!16*q6fbvynw3!f^_z)edv(*#8p6^qe=tj5c=@
 DEBUG = True
 
 # ALLOWED_HOSTS defines a whitelist of hostnames that the Django site can serve.
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 # INSTALLED_APPS lists all the Django and third-party apps that are enabled in the project.
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'post',
+    'comment',
     'rest_framework',
     'djoser',
     'corsheaders',
@@ -116,13 +117,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # REST framework settings, including JWT authentication.
-# REST_FRAMEWORK={
-#     'NON_FIELD_ERRORS_KEY':'error',
-#         'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.SessionAuthentication',
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     )
-# }
+REST_FRAMEWORK={
+    'NON_FIELD_ERRORS_KEY':'error',
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 DOMAIN='localhost:3000'
 SITE_NAME = 'Henry Ultimate Authentication Course'
@@ -130,7 +131,7 @@ SITE_NAME = 'Henry Ultimate Authentication Course'
 # Simple JWT settings for customizing JWT authentication.
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "UPDATE_LAST_LOGIN": True,
@@ -142,8 +143,8 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': False,
     'USER_EMAIL_FIELD': 'email',
     'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': True,
-    'SEND_CONFIRMATION_EMAIL': True,
+    'SEND_ACTIVATION_EMAIL': False,
+    'SEND_CONFIRMATION_EMAIL': False,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION':True,
     'PASSWORD_RESET_CONFIRM_URL': 'auth/reset/confirm/{uid}/{token}',
     'SET_PASSWORD_RETYPE': True,
