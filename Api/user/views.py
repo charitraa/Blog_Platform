@@ -1,9 +1,9 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserPhotoUpdateSerializer , GithubLoginSerializer, UserUpdateSerializer
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
+from .serializers import UserPhotoUpdateSerializer , GithubLoginSerializer, UserUpdateSerializer
 from django.contrib.auth import get_user_model
 
 class UserPhotoUpdateView(generics.UpdateAPIView):
