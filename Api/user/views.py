@@ -1,10 +1,10 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserPhotoUpdateSerializer , GithubLoginSerializer
-from django.shortcuts import render
+from .serializers import UserPhotoUpdateSerializer , GithubLoginSerializer, UserUpdateSerializer
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth import get_user_model
 
 class UserPhotoUpdateView(generics.UpdateAPIView):
     serializer_class = UserPhotoUpdateSerializer
@@ -12,7 +12,15 @@ class UserPhotoUpdateView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+    
+User = get_user_model()
 
+class UserUpdateView(generics.UpdateAPIView):
+    queryset = User.objects.all()  
+    serializer_class = UserUpdateSerializer  
+    permission_classes = [IsAuthenticated]
+    def get_object(self):
+        return self.request.user
 
 class GithubOauthSignInView(GenericAPIView):
     serializer_class = GithubLoginSerializer

@@ -9,14 +9,31 @@ User = get_user_model()
 class UserCreateSerializer(BaseUserCreateSerializer):
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
-        fields = ('id','first_name','last_name','username','photo','date_of_birth','email', 'password','bio','district','city','password')
-
+        fields = ('id', 'first_name', 'last_name', 'username', 'photo', 'date_of_birth', 'email', 'password', 'bio', 'district', 'city')
+    
 class UserPhotoUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['photo']
 
-from rest_framework import serializers
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name', 'username', 'date_of_birth', 'bio', 'district', 'city']
+    def update(self, instance, validated_data):
+        # Prevent email from being updated to something already in use
+        if 'email' in validated_data and User.objects.filter(email=validated_data['email']).exclude(id=instance.id).exists():
+            raise serializers.ValidationError({"email": "This email is already in use."})   
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.username = validated_data.get('username', instance.username)
+        instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
+        instance.bio = validated_data.get('bio', instance.bio)
+        instance.district = validated_data.get('district', instance.district)
+        instance.city = validated_data.get('city', instance.city)
+        
+        instance.save()
+        return instance
 
 class GithubLoginSerializer(serializers.Serializer):
     code = serializers.CharField()
