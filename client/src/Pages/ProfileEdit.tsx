@@ -85,9 +85,8 @@ const ProfileEdit: React.FC = () => {
     };
 
     try {
-      const response = await axiosInstance.put("/user/auth/users/me/", updatedData, {
+      const response = await axiosInstance.put("/user/profile/update/", updatedData, {
         headers: {
-          Authorization: `JWT ${localStorage.getItem("access_token")}`,
           "Content-Type": "application/json",
         },
       });

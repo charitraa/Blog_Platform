@@ -23,7 +23,7 @@ const BlogPostView: React.FC = () => {
   const [newComment, setNewComment] = useState('');
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editingContent, setEditingContent] = useState('');
-  const { user, loading, error } = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -64,7 +64,7 @@ const BlogPostView: React.FC = () => {
 
   const handleEditComment = async (commentId: string) => {
     try {
-      await axiosInstance.put(`comments/${commentId}/`, {
+      await axiosInstance.put(`comment/comments/${commentId}/`, {
         content: editingContent,
       });
       setComments(
@@ -81,7 +81,7 @@ const BlogPostView: React.FC = () => {
 
   const handleDeleteComment = async (commentId: string) => {
     try {
-      await axiosInstance.delete(`/post/posts/${id}/comments/${commentId}/`);
+      await axiosInstance.delete(`comment/comments/${commentId}/`);
       setComments(comments.filter((comment) => comment.id !== commentId));
     } catch (error) {
       console.error('Error deleting comment:', error);
