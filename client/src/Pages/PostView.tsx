@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../Axois/Axois';
+import { useUser } from '../useHook/User';
 
 interface BlogPost {
   id: string;
@@ -12,7 +13,7 @@ interface BlogPost {
 interface Comment {
   id: string;
   content: string;
-  user: string; // For simplicity, assume 'user' is the username or id
+  user: string; 
 }
 
 const BlogPostView: React.FC = () => {
@@ -22,6 +23,7 @@ const BlogPostView: React.FC = () => {
   const [newComment, setNewComment] = useState('');
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editingContent, setEditingContent] = useState('');
+  const { user, loading, error } = useUser();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -35,7 +37,7 @@ const BlogPostView: React.FC = () => {
 
     const fetchComments = async () => {
       try {
-        const response = await axiosInstance(`/post/posts/${id}/comments/`);
+        const response = await axiosInstance.get(`comment/posts/${id}/comments/`);
         setComments(response.data);
       } catch (error) {
         console.error('Error fetching comments:', error);
@@ -48,8 +50,10 @@ const BlogPostView: React.FC = () => {
 
   const handleAddComment = async () => {
     try {
-      const response = await axiosInstance.post(`/post/posts/${id}/comments/`, {
+      const response = await axiosInstance.post(`comment/posts/${id}/comments/`, {
         content: newComment,
+        author_id: user.id,
+        post:id
       });
       setComments([...comments, response.data]);
       setNewComment('');
@@ -60,7 +64,7 @@ const BlogPostView: React.FC = () => {
 
   const handleEditComment = async (commentId: string) => {
     try {
-      await axiosInstance.put(`/post/posts/${id}/comments/${commentId}/`, {
+      await axiosInstance.put(`comments/${commentId}/`, {
         content: editingContent,
       });
       setComments(

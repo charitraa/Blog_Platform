@@ -4,7 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "../useHook/User";
 import axiosInstance from "../Axois/Axois";
 import { useNavigate } from "react-router-dom";
-import bcrypt from 'bcryptjs';
 
 const districts: string[] = [
   "Jhapa", "Ilam", "Panchthar", "Taplejung", "Sankhuwasabha", "Tehrathum", "Dhankuta", "Bhojpur", "Khotang", 
@@ -31,7 +30,6 @@ interface User {
 const ProfileEdit: React.FC = () => {
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
   const [city, setCity] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [parsedUser, setParsedUser] = useState<User | null>(null);
   const { user } = useUser();
   const navigate = useNavigate();
@@ -43,7 +41,6 @@ const ProfileEdit: React.FC = () => {
       setParsedUser(user);
       setSelectedDistrict(user.district || "");
       setCity(user.city || "");
-      setPassword(user.password || "");
     }
   }, [user]);
 
@@ -55,11 +52,6 @@ const ProfileEdit: React.FC = () => {
   const handleCityChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCity(event.target.value);
     setErrors((prev) => ({ ...prev, city: "" }));
-  };
-
-  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-    setErrors((prev) => ({ ...prev, password: "" }));
   };
 
   const validateForm = (): boolean => {
@@ -76,14 +68,6 @@ const ProfileEdit: React.FC = () => {
       valid = false;
     }
 
-    if (!password) {
-      newErrors.password = "Password is required.";
-      valid = false;
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long.";
-      valid = false;
-    }
-
     setErrors(newErrors);
     return valid;
   };
@@ -92,16 +76,12 @@ const ProfileEdit: React.FC = () => {
     event.preventDefault();
 
     if (!validateForm()) return;
-    const salt = bcrypt.genSaltSync(10); // Generate salt
-    const hashedPassword = bcrypt.hashSync(password, salt);
-
     const updatedData = {
       district: selectedDistrict,
       city,
       first_name: parsedUser?.first_name,
       last_name: parsedUser?.last_name,
       email: parsedUser?.email,
-      password: hashedPassword,
     };
 
     try {
@@ -111,12 +91,13 @@ const ProfileEdit: React.FC = () => {
           "Content-Type": "application/json",
         },
       });
-      toast.success("Profile updated successfully!");
+      if (response) {
+        toast.success("Profile updated successfully!");
       setTimeout(() => {
         window.location.reload();
       }
       ,1000)
-
+      }
     } catch (error) {
       toast.error("Failed to update profile.");
     }
@@ -249,22 +230,6 @@ const ProfileEdit: React.FC = () => {
                   className="block w-full rounded-md py-1.5 text-gray-900 shadow-sm sm:text-sm sm:leading-6"
                 />
                 {errors.city && <p className="text-red-600">{errors.city}</p>}
-              </div>
-
-              {/* Password */}
-              <div className="col-span-full">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  className="block w-full rounded-md py-1.5 text-gray-900 shadow-sm sm:text-sm sm:leading-6"
-                />
-                {errors.password && <p className="text-red-600">{errors.password}</p>}
               </div>
             </div>
           </div>
