@@ -1,11 +1,14 @@
+import Navbar from './Pages/Navbar'
 import './index.css'
 import Route  from './Router/Route'
+import AllCart from './Pages/AllCart'
 function App() {
- 
+
   return (
-    <>
-      <Route/>
-    </>
+    <div className='flex'>
+      <Navbar />
+      <AllCart/>
+    </div>
   )
 }
 

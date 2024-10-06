@@ -2,8 +2,6 @@ import requests
 from django.conf import settings
 from rest_framework.exceptions import AuthenticationFailed
 
-
-
 class Github:
     @staticmethod
     def exchange_code_for_token(code):

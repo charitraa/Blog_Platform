@@ -32,6 +32,7 @@ const ProfileEdit: React.FC = () => {
   const [city, setCity] = useState<string>("");
   const [parsedUser, setParsedUser] = useState<User | null>(null);
   const { user } = useUser();
+  const [username, setusername] = useState()
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<{ district?: string; city?: string; password?: string }>({});
@@ -39,12 +40,18 @@ const ProfileEdit: React.FC = () => {
   useEffect(() => {
     if (user) {
       setParsedUser(user);
+      setusername(user.username)
       setSelectedDistrict(user.district || "");
       setCity(user.city || "");
     }
   }, [user]);
 
   const handleDistrictChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDistrict(event.target.value);
+    setErrors((prev) => ({ ...prev, district: "" }));
+  };
+
+  const handleusernameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedDistrict(event.target.value);
     setErrors((prev) => ({ ...prev, district: "" }));
   };
@@ -78,7 +85,7 @@ const ProfileEdit: React.FC = () => {
     if (!validateForm()) return;
     const updatedData = {
       district: selectedDistrict,
-      city,
+      city:city,
       first_name: parsedUser?.first_name,
       last_name: parsedUser?.last_name,
       email: parsedUser?.email,
@@ -123,7 +130,8 @@ const ProfileEdit: React.FC = () => {
                   id="username"
                   name="username"
                   type="text"
-                  value={parsedUser?.username || ""}
+                  onChange={handleusernameChange}
+                  value={username}
                   className="block w-full rounded-md py-1.5 text-gray-900 shadow-sm sm:text-sm sm:leading-6"
                   readOnly
                 />
