@@ -1,13 +1,19 @@
-import Navbar from './Pages/Navbar'
 import './index.css'
-import Route  from './Router/Route'
-import AllCart from './Pages/AllCart'
+import Sidebar from './Pages/Sidebar'
+import MainContent from './Pages/MainContent'
+import RightSidebar from './Pages/RightSidebar'
 function App() {
 
   return (
-    <div className='flex'>
-      <Navbar />
-      <AllCart/>
+   <div className="flex">
+      {/* Sidebar */}
+      <Sidebar />
+      
+      {/* Main Content */}
+      <MainContent />
+      
+      {/* Right Sidebar */}
+      <RightSidebar />
     </div>
   )
 }
